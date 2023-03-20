@@ -102,18 +102,14 @@ const ITLWidget = () => {
           <div>Rank: {state.rank}</div>
         </div>
         <div className="entrant_points">
-          <div>RP:
-            <div>
-              <div>{state.rankingPoints}</div>
-            </div>
-          </div>
+          <div>RP:</div>
+          <div />
+          <div>{state.rankingPoints}</div>
         </div>
         <div className="entrant_points">
-          <div>TP:
-            <div>
-              <div>{state.totalPoints}</div>
-            </div>
-          </div>
+          <div>TP:</div>
+          <div />
+          <div>{state.totalPoints}</div>
         </div>
       </div>
 
