@@ -1,0 +1,22 @@
+{
+  "name": "itl2023widget",
+  "version": "1.0.0",
+  "description": "Streamer widget and API for [ITL Online 2022](https://itl2023.groovestats.com).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonJWong/itl2023widget.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JonJWong/itl2023widget/issues"
+  },
+  "homepage": "https://github.com/JonJWong/itl2023widget#readme",
+  "dependencies": {
+    "react": "^18.2.0"
+  }
+}
