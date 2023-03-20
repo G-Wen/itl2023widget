@@ -62,7 +62,7 @@
 .clear_info{
   grid-column: 3;
   grid-row: 1;
-  padding-top: 32px;
+  padding-top: 30px;
   padding-right: 15px;
 }
 .passes{
@@ -103,36 +103,41 @@
 .tech_level_info{
   grid-column: 4;
   grid-row: 1;
-  padding-top: 32px;
+  padding-top: 28px;
   padding-right: 15px;
 }
 .crossover{
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   justify-content: space-between;
 }
 .bracket{
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   justify-content: space-between;
 }
 .footswitch{
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   justify-content: space-between;
 }
 .jack{
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   justify-content: space-between;
 }
 .sideswitch{
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   justify-content: space-between;
 }
 .doublestep{
-  font-size: 13px;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+}
+.stamina{
+  font-size: 11px;
   display: flex;
   justify-content: space-between;
 }
