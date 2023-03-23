@@ -98,22 +98,22 @@ const ITLWidget = () => {
         <div className="entrant-id">
           <div>ID: {state.id}</div>
         </div>
-        <div className="entrant_rank">
+        <div className="entrant-rank">
           <div>Rank: {state.rank}</div>
         </div>
-        <div className="entrant_points">
+        <div className="entrant-points">
           <div>RP:</div>
           <div />
           <div>{state.rankingPoints}</div>
         </div>
-        <div className="entrant_points">
+        <div className="entrant-points">
           <div>TP:</div>
           <div />
           <div>{state.totalPoints}</div>
         </div>
       </div>
 
-      <div className="clear_info">
+      <div className="clear-info">
         <div className="passes">
           <div>Passes:</div>
           <div>{state.passes}</div>
@@ -136,7 +136,7 @@ const ITLWidget = () => {
         </div>
       </div>
 
-      <div className="tech_level_info">
+      <div className="tech-level-info">
         <div className="crossover">
           <div>XO:</div>
           <div>{state.crossoverLevel}</div>
@@ -172,7 +172,7 @@ const ITLWidget = () => {
         {state.ladder.map((item, index) => {
           return (
             <div key={index} className={item.type}>
-              <div className="ladder_rank">{`${item.rank} + '. ' + ${item.name}`}</div>
+              <div className="ladder-rank">{`${item.rank} + '. ' + ${item.name}`}</div>
               <div>{format_difference(item.difference)}</div>
             </div>
           )
