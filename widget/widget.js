@@ -112,91 +112,93 @@ class ITLWidget extends React.Component {
   }
 
   render() {
+    const { entrant, ladder } = this.state;
+
     const entrantName = e('div', {className: "entrant-name"},
-      (CONFIG.overrideName == "" ? this.state.entrant.name : CONFIG.overrideName)
+      (CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName)
     )
 
     const entrantInfo = e('div', {className: "entrant-info"},
       e('div', {className: "entrant-id"},
-        e('div', null, "ID: " + this.state.entrant.id),
+        e('div', null, "ID: " + entrant.id),
       ),
       e('div', {className: "entrant-rank"},
-        e('div', null, "Rank: " + this.state.entrant.rank),
+        e('div', null, "Rank: " + entrant.rank),
       ),
       e('div', {className: "entrant-points"},
         e('div', null, "RP:"),
         e('div', null, ""),
-        e('div', null, this.state.entrant.rankingPoints),
+        e('div', null, entrant.rankingPoints),
       ),
       e('div', {className: "entrant-points"},
         e('div', null, "TP:"),
         e('div', null, ""),
-        e('div', null, this.state.entrant.totalPoints),
+        e('div', null, entrant.totalPoints),
       ),
     )
 
     const songInfo = e('div', {className: "clear-info"},
       e('div', {className: "passes"},
         e('div', null, "Passes:"),
-        e('div', null, this.state.entrant.totalPass)
+        e('div', null, entrant.totalPass)
       ),
       e('div', {className: "fcs"},
         e('div', null, "FCs:"),
-        e('div', null, this.state.entrant.totalFc)
+        e('div', null, entrant.totalFc)
       ),
       e('div', {className: "fecs"},
         e('div', null, "FECs:"),
-        e('div', null, this.state.entrant.totalFec)
+        e('div', null, entrant.totalFec)
       ),
       e('div', {className: "quads"},
         e('div', null, "Quads:"),
-        e('div', null, this.state.entrant.totalQuad)
+        e('div', null, entrant.totalQuad)
       ),
       e('div', {className: "quints"},
         e('div', null, "Quints:"),
-        e('div', null, this.state.entrant.totalQuint)
+        e('div', null, entrant.totalQuint)
       ),
     )
 
     const techLevelInfo = e('div', {className: "tech-level-info"},
       e('div', {className: "bracket"},
         e('div', null, "BR:"),
-        e('div', null, this.state.entrant.bracketLevel),
+        e('div', null, entrant.bracketLevel),
       ),
       e('div', {className: "crossover"},
         e('div', null, "XO:"),
-        e('div', null, this.state.entrant.crossoverLevel),
+        e('div', null, entrant.crossoverLevel),
       ),
       e('div', {className: "footswitch"},
         e('div', null, "FS:"),
-        e('div', null, this.state.entrant.footswitchLevel),
+        e('div', null, entrant.footswitchLevel),
       ),
       e('div', {className: "jack"},
         e('div', null, "JA:"),
-        e('div', null, this.state.entrant.jackLevel),
+        e('div', null, entrant.jackLevel),
       ),
       e('div', {className: "sideswitch"},
         e('div', null, "SS:"),
-        e('div', null, this.state.entrant.sideswitchLevel),
+        e('div', null, entrant.sideswitchLevel),
       ),
       e('div', {className: "doublestep"},
         e('div', null, "DS:"),
-        e('div', null, this.state.entrant.doublestepLevel),
+        e('div', null, entrant.doublestepLevel),
       ),
       e('div', {className: "stamina"},
         e('div', null, "ST:"),
-        e('div', null, this.state.entrant.staminaLevel),
+        e('div', null, entrant.staminaLevel),
       ),
     )
 
-    const ladderEntries = this.state.ladder.map((player, index) =>
+    const ladderEntries = ladder.map((player, index) =>
       e('div', {'key': index, className: player.type}, 
         e('div', {className: "ladder-rank"}, `${player.rank}. ${player.name}`),
         e('div', {}, formatDifference(player.difference))
       )
     );
 
-    const ladder = e('div', {className: "ladder"}, 
+    const ladderList = e('div', {className: "ladder"}, 
       e('div', {className: "ladder-title"}, "ITL Online 2023 - Leaderboard"),
       ladderEntries
     );
@@ -209,7 +211,7 @@ class ITLWidget extends React.Component {
       entrantInfo,
       songInfo,
       techLevelInfo,
-      ladder
+      ladderList
     )
   }
 }
