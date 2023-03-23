@@ -104,7 +104,8 @@
   grid-column: 4;
   grid-row: 1;
   padding-top: 28px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 5px;
 }
 .crossover{
   font-size: 11px;
