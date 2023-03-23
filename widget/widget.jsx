@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
-// Change this to be the same as your ITL entrant id
+/* Change the number here to be the same as your ITL entrant id
+  ex. ENTRANT_ID = 99; */
 const ENTRANT_ID = 41;
 
 const REFRESH_INTERVAL = 60000; // 60 seconds in milliseconds
@@ -18,6 +19,22 @@ const CONFIG = {
     Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
   avatarSource: "",
 };
+
+const LADDER_ROW = {
+  rank: "--",
+  name: "--",
+  rankingPoints: 0,
+  difference: 0,
+  type: "neutral",
+}
+
+const createLadder = (num) => {
+  const ladder = [];
+  for (let i = 0; i < num; i++) {
+    ladder.push(LADDER_ROW)
+  }
+  return ladder;
+}
 
 const DEFAULT_STATE = {
   entrant: {
@@ -40,58 +57,15 @@ const DEFAULT_STATE = {
     staminaLevel: "-",
   },
 
-  ladder: [
-    {
-      rank: "--",
-      name: "--",
-      rankingPoints: 0,
-      difference: 0,
-      type: "neutral",
-    },
-    {
-      rank: "--",
-      name: "--",
-      rankingPoints: 0,
-      difference: 0,
-      type: "neutral",
-    },
-    {
-      rank: "--",
-      name: "--",
-      rankingPoints: 0,
-      difference: 0,
-      type: "neutral",
-    },
-    {
-      rank: "--",
-      name: "--",
-      rankingPoints: 0,
-      difference: 0,
-      type: "neutral",
-    },
-    {
-      rank: "--",
-      name: "--",
-      rankingPoints: 0,
-      difference: 0,
-      type: "neutral",
-    },
-    {
-      rank: "--",
-      name: "--",
-      rankingPoints: 0,
-      difference: 0,
-      type: "neutral",
-    },
-  ],
+  ladder: createLadder(6),
 };
 
 const formatDifference = (difference) => {
   return difference === 0
     ? "--"
     : difference > 0
-    ? `+${difference}`
-    : `${difference}`;
+      ? `+${difference}`
+      : `${difference}`;
 };
 
 const ITLWidget = () => {
