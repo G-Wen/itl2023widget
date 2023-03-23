@@ -161,6 +161,10 @@ const ITLWidget = () => {
           <div>DS:</div>
           <div>{state.doublestepLevel}</div>
         </div>
+        <div className="stamina">
+          <div>ST:</div>
+          <div>{state.staminaLevel}</div>
+        </div>
       </div>
       
       <div className="ladder">
