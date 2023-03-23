@@ -16,7 +16,33 @@ const config = {
 }
 
 const e = React.createElement;
-const defaultState = {"id":"--","name":"--","ranking-points":"--","total-points":"--","song_points":"--","bonus_points":"--","passes":"---","full_combos":"--","full_excellent_combos":"--","quad_stars":"--","quint_stars":"-","rival1":null,"rival2":null,"rival3":null,"rank":"---","ladder":[]};
+const defaultState = {
+  "id": "--",
+  "name": "--",
+  "rank": "---",
+  "rankingPoints": "--",
+  "totalPoints": "--",
+  "totalPass": "---",
+  "totalFC": "--",
+  "totalFec": "--",
+  "totalQuad": "--",
+  "totalQuint": "--",
+  "jackLevel": "-",
+  "crossoverLevel": "-",
+  "bracketLevel": "-",
+  "footswitchLevel": "-",
+  "sideswitchLevel": "-",
+  "doublestepLevel": "-",
+  "staminaLevel": "-",
+  "ladder": [
+    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+  ]
+}
 
 class ITLWidget extends React.Component {
   constructor(props) {
@@ -81,13 +107,13 @@ class ITLWidget extends React.Component {
     )
 
     var techLevelInfo = e('div', {className: "tech-level-info"},
-      e('div', {className: "crossover"},
-        e('div', null, "XO:"),
-        e('div', null, this.state.crossoverLevel),
-      ),
       e('div', {className: "bracket"},
         e('div', null, "BR:"),
         e('div', null, this.state.bracketLevel),
+      ),
+      e('div', {className: "crossover"},
+        e('div', null, "XO:"),
+        e('div', null, this.state.crossoverLevel),
       ),
       e('div', {className: "footswitch"},
         e('div', null, "FS:"),

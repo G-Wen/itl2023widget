@@ -19,22 +19,31 @@ const REFRESH_INTERVAL = 60000 // 60 seconds in milliseconds
 
 const ITLWidget = () => {
   const [state, setState] = useState({
-    id: '--',
-    name: '--',
-    rankingPoints: '--',
-    totalPoints: '--',
-    songPoints: '--',
-    bonusPoints: '--',
-    passes: '--',
-    fullCombos: '--',
-    fullExcellentCombos: '--',
-    quadStars: '--',
-    quintStars: '--',
-    rival1: null,
-    rival2: null,
-    rival3: null,
-    rank: '---',
-    ladder: []
+    "id": "--",
+    "name": "--",
+    "rank": "---",
+    "rankingPoints": "--",
+    "totalPoints": "--",
+    "totalPass": "---",
+    "totalFC": "--",
+    "totalFec": "--",
+    "totalQuad": "--",
+    "totalQuint": "-",
+    "jackLevel": "-",
+    "crossoverLevel": "-",
+    "bracketLevel": "-",
+    "footswitchLevel": "-",
+    "sideswitchLevel": "-",
+    "doublestepLevel": "-",
+    "staminaLevel": "-",
+    "ladder": [
+      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    ]
   });
 
   const format_difference = (diff) => {
@@ -137,13 +146,13 @@ const ITLWidget = () => {
       </div>
 
       <div className="tech-level-info">
-        <div className="crossover">
-          <div>XO:</div>
-          <div>{state.crossoverLevel}</div>
-        </div>
         <div className="bracket">
           <div>BR:</div>
           <div>{state.bracketLevel}</div>
+        </div>
+        <div className="crossover">
+          <div>XO:</div>
+          <div>{state.crossoverLevel}</div>
         </div>
         <div className="footswitch">
           <div>FS:</div>
