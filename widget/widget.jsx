@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
 
-const CONFIG = {
-  // Change this to be the same as your ITL entrant id
-  entrantId: 41,
- 
-  endpoint: "https://itl2023.groovestats.com/api/entrant/",
+// Change this to be the same as your ITL entrant id
+const ENTRANT_ID = 41;
 
-  // Use this to override the name that displays on the widget
-  // Useful if your ITL/GS name is over 11 characters
+const REFRESH_INTERVAL = 60000// 60 seconds in milliseconds
+
+const CONFIG = {
+  endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
+
+  /* Use this to override the name that displays on the widget.
+    Useful if your ITL/GS name is over 11 characters, or if you prefer
+    a different handle. */
   overrideName: "",
 
-  // Use this to override the avatar source
-  // Useful if you want to use a non-png file as an avatar
+  /* Use this to override the avatar source.
+    Useful if you want to use a non-png file as an avatar.
+    Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
   avatarSource: "",
 }
-
-const REFRESH_INTERVAL = 60000 // 60 seconds in milliseconds
 
 const DEFAULT_STATE = {
   entrant: {
@@ -37,6 +39,7 @@ const DEFAULT_STATE = {
     doublestepLevel: "-",
     staminaLevel: "-",
   },
+
   ladder: [
     {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
     {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
@@ -47,45 +50,39 @@ const DEFAULT_STATE = {
   ]
 }
 
-
-const formatDifference = (diff) => {
-  if (diff == 0) {
-    return "--";
-  } 
-  else if (diff > 0) {
-    return "+" + diff;
-  }
-  else {
-    return diff;
-  }
+const formatDifference = (difference) => {
+  return difference === 0
+    ? "--"
+    : difference > 0
+      ? `+${difference}`
+      : `${difference}`;
 }
 
 const ITLWidget = () => {
   const [state, setState] = useState(DEFAULT_STATE);
+  const [loaded, setLoaded] = useState(false);
 
   const getInfo = () => {
-    fetch(CONFIG.endpoint + CONFIG.entrantId + "/stats")
+    fetch(CONFIG.endpoint)
       .then(response => {
-        if (response.ok) { 
+        if (response.ok) {
           const json = response.json();
           return json;
          }
+         
         return Promise.reject(response); 
       })
-
       .then(json => {
-          const data = json.data
-  
-          // calculate the ranking points difference between the entrantId and the rest of the ladder
-          for (let i = 0; i < 6; i++) { 
-            data.ladder[i].difference = data.entrant.rankingPoints
-              - data.ladder[i].rankingPoints;
-          }
-  
-          return data;
-      })
-      .then(data => {
-        setState(data);
+        const data = json.data
+
+        // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
+        for (let i = 0; i < 6; i++) { 
+          data.ladder[i].difference = data.entrant.rankingPoints
+            - data.ladder[i].rankingPoints;
+        }
+
+        setState(data)
+        setLoaded(true)
       })
       .catch(error => {
         console.error("Error", error);
@@ -94,13 +91,19 @@ const ITLWidget = () => {
 
   useEffect(() => {
     // runs at component mount
-    const componentInterval = setInterval(getInfo(), REFRESH_INTERVAL);
+    getInfo();
+    const refreshInterval = setInterval(() => getInfo(), REFRESH_INTERVAL);
 
     return () => {
       // runs at component un-mount
-      clearInterval(componentInterval)
+      clearInterval(refreshInterval)
     }
-  })
+
+    /* Will run once on mount, and then whenever getInfo changes (never).
+      Still runs on dismount with return */
+  }, [getInfo])
+
+  if (!loaded) return <></>;
 
   return (
     <div className="wrapper">
@@ -189,13 +192,13 @@ const ITLWidget = () => {
       
       <div className="ladder">
         <div className="ladder-title">ITL Online 2023 - Leaderboard</div>
-        {state.ladder.map((item, index) => {
+        {state.ladder.map((player, index) => {
           return (
-            <div key={index} className={item.type}>
+            <div key={index} className={player.type}>
               <div className="ladder-rank">
-                {item.rank}. {item.name}
+                {player.rank}. {player.name}
               </div>
-              <div>{formatDifference(item.difference)}</div>
+              <div>{formatDifference(player.difference)}</div>
             </div>
           )
         })}
