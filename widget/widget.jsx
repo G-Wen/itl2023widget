@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // Change this to be the same as your ITL entrant id
 const ENTRANT_ID = 41;
 
-const REFRESH_INTERVAL = 60000// 60 seconds in milliseconds
+const REFRESH_INTERVAL = 60000; // 60 seconds in milliseconds
 
 const CONFIG = {
   endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
@@ -17,7 +17,7 @@ const CONFIG = {
     Useful if you want to use a non-png file as an avatar.
     Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
   avatarSource: "",
-}
+};
 
 const DEFAULT_STATE = {
   entrant: {
@@ -41,22 +41,58 @@ const DEFAULT_STATE = {
   },
 
   ladder: [
-    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-  ]
-}
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+  ],
+};
 
 const formatDifference = (difference) => {
   return difference === 0
     ? "--"
     : difference > 0
-      ? `+${difference}`
-      : `${difference}`;
-}
+    ? `+${difference}`
+    : `${difference}`;
+};
 
 const ITLWidget = () => {
   const [state, setState] = useState(DEFAULT_STATE);
@@ -64,30 +100,30 @@ const ITLWidget = () => {
 
   const getInfo = () => {
     fetch(CONFIG.endpoint)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           const json = response.json();
           return json;
-         }
-         
-        return Promise.reject(response); 
-      })
-      .then(json => {
-        const data = json.data
-
-        // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
-        for (let i = 0; i < 6; i++) { 
-          data.ladder[i].difference = data.entrant.rankingPoints
-            - data.ladder[i].rankingPoints;
         }
 
-        setState(data)
-        setLoaded(true)
+        return Promise.reject(response);
       })
-      .catch(error => {
+      .then((json) => {
+        const data = json.data;
+
+        // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
+        for (let i = 0; i < 6; i++) {
+          data.ladder[i].difference =
+            data.entrant.rankingPoints - data.ladder[i].rankingPoints;
+        }
+
+        setState(data);
+        setLoaded(true);
+      })
+      .catch((error) => {
         console.error("Error", error);
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     // runs at component mount
@@ -96,12 +132,12 @@ const ITLWidget = () => {
 
     return () => {
       // runs at component un-mount
-      clearInterval(refreshInterval)
-    }
+      clearInterval(refreshInterval);
+    };
 
     /* Will run once on mount, and then whenever getInfo changes (never).
       Still runs on dismount with return */
-  }, [getInfo])
+  }, [getInfo]);
 
   if (!loaded) return <></>;
 
@@ -110,7 +146,8 @@ const ITLWidget = () => {
       <div className="profile-picture">
         <img
           src={CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource}
-          style={{objectFit: "contain", width: "100px", height: "100px"}} />
+          style={{ objectFit: "contain", width: "100px", height: "100px" }}
+        />
       </div>
 
       <div className="entrant-name">
@@ -189,7 +226,7 @@ const ITLWidget = () => {
           <div>{state.entrant.staminaLevel}</div>
         </div>
       </div>
-      
+
       <div className="ladder">
         <div className="ladder-title">ITL Online 2023 - Leaderboard</div>
         {state.ladder.map((player, index) => {
@@ -200,12 +237,12 @@ const ITLWidget = () => {
               </div>
               <div>{formatDifference(player.difference)}</div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById("entrant"));
-root.render(<ITLWidget />)
+root.render(<ITLWidget />);

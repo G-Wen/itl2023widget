@@ -1,60 +1,137 @@
-'use strict';
+"use strict";
+// Change this to be the same as your ITL entrant id
+const ENTRANT_ID = 41;
 
-const config = {
-  // Change this to be the same as your ITL entrant id
-  entrantId: 41,
- 
-  endpoint: "https://itl2023.groovestats.com/api/entrant/",
+const REFRESH_INTERVAL = 60000; // 60 seconds in milliseconds
 
-  // Use this to override the name that displays on the widget
-  // Useful if your ITL/GS name is over 11 characters
+const CONFIG = {
+  endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
+
+  /* Use this to override the name that displays on the widget.
+    Useful if your ITL/GS name is over 11 characters, or if you prefer
+    a different handle. */
   overrideName: "",
 
-  // Use this to override the avatar source
-  // Useful if you want to use a non-png file as an avatar
+  /* Use this to override the avatar source.
+    Useful if you want to use a non-png file as an avatar.
+    Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
   avatarSource: "",
+};
+
+const DEFAULT_STATE = {
+  entrant: {
+    id: "--",
+    name: "---",
+    rank: "---",
+    rankingPoints: "--",
+    totalPoints: "--",
+    totalPass: "---",
+    totalFc: "--",
+    totalFec: "--",
+    totalQuad: "--",
+    totalQuint: "--",
+    jackLevel: "-",
+    crossoverLevel: "-",
+    bracketLevel: "-",
+    footswitchLevel: "-",
+    sideswitchLevel: "-",
+    doublestepLevel: "-",
+    staminaLevel: "-",
+  },
+
+  ladder: [
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+    {
+      rank: "--",
+      name: "--",
+      rankingPoints: 0,
+      difference: 0,
+      type: "neutral",
+    },
+  ],
+};
+
+function getInfo() {
+  fetch(CONFIG.endpoint)
+    .then((response) => {
+      if (response.ok) {
+        const json = response.json();
+        return json;
+      }
+      return Promise.reject(response);
+    })
+    .then((json) => {
+      const data = json.data;
+
+      // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
+      for (let i = 0; i < 6; i++) {
+        data.ladder[i].difference =
+          data.entrant.rankingPoints - data.ladder[i].rankingPoints;
+      }
+
+      const newState = Object.assign({}, data, { loaded: true })
+      this.setState(newState);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    });
 }
 
+const formatDifference = (difference) => {
+  return difference === 0
+    ? "--"
+    : difference > 0
+    ? `+${difference}`
+    : `${difference}`;
+};
+
 const e = React.createElement;
-const defaultState = {
-  "entrant": {
-    "id": "--",
-    "name": "---",
-    "rank": "---",
-    "rankingPoints": "--",
-    "totalPoints": "--",
-    "totalPass": "---",
-    "totalFc": "--",
-    "totalFec": "--",
-    "totalQuad": "--",
-    "totalQuint": "--",
-    "jackLevel": "-",
-    "crossoverLevel": "-",
-    "bracketLevel": "-",
-    "footswitchLevel": "-",
-    "sideswitchLevel": "-",
-    "doublestepLevel": "-",
-    "staminaLevel": "-",
-  },
-  "ladder": [
-    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-    {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-  ]
-}
 
 class ITLWidget extends React.Component {
   constructor(props) {
     super(props);
-    this.state = defaultState;
+    this.state = DEFAULT_STATE;
+    this.state.loaded = false;
+    this.boundGetInfo = getInfo.bind(this)
   }
 
   componentDidMount() {
-    getInfo.bind(this)();
-    this.interval = setInterval(getInfo.bind(this), 60*1000);
+    this.boundGetInfo();
+    this.interval = setInterval(() => this.boundGetInfo(), REFRESH_INTERVAL);
   }
 
   componentWillUnmount() {
@@ -62,146 +139,164 @@ class ITLWidget extends React.Component {
   }
 
   render() {
-    var entrantName = e('div', {className: "entrant-name"},
-        (config.overrideName == "" ? this.state.entrant.name : config.overrideName)
-    )
+    var entrantName = e(
+      "div",
+      { className: "entrant-name" },
+      CONFIG.overrideName == "" ? this.state.entrant.name : CONFIG.overrideName
+    );
 
-    var entrantInfo = e('div', {className: "entrant-info"},
-      e('div', {className: "entrant-id"},
-        e('div', null, "ID: " + this.state.entrant.id),
+    var entrantInfo = e(
+      "div",
+      { className: "entrant-info" },
+      e(
+        "div",
+        { className: "entrant-id" },
+        e("div", null, "ID: " + this.state.entrant.id)
       ),
-      e('div', {className: "entrant-rank"},
-        e('div', null, "Rank: " + this.state.entrant.rank),
+      e(
+        "div",
+        { className: "entrant-rank" },
+        e("div", null, "Rank: " + this.state.entrant.rank)
       ),
-      e('div', {className: "entrant-points"},
-        e('div', null, "RP:"),
-        e('div', null, ""),
-        e('div', null, this.state.entrant.rankingPoints),
+      e(
+        "div",
+        { className: "entrant-points" },
+        e("div", null, "RP:"),
+        e("div", null, ""),
+        e("div", null, this.state.entrant.rankingPoints)
       ),
-      e('div', {className: "entrant-points"},
-        e('div', null, "TP:"),
-        e('div', null, ""),
-        e('div', null, this.state.entrant.totalPoints),
-      ),
-    )
-
-    var songInfo = e('div', {className: "clear-info"},
-      e('div', {className: "passes"},
-        e('div', null, "Passes:"),
-        e('div', null, this.state.entrant.totalPass)
-      ),
-      e('div', {className: "fcs"},
-        e('div', null, "FCs:"),
-        e('div', null, this.state.entrant.totalFc)
-      ),
-      e('div', {className: "fecs"},
-        e('div', null, "FECs:"),
-        e('div', null, this.state.entrant.totalFec)
-      ),
-      e('div', {className: "quads"},
-        e('div', null, "Quads:"),
-        e('div', null, this.state.entrant.totalQuad)
-      ),
-      e('div', {className: "quints"},
-        e('div', null, "Quints:"),
-        e('div', null, this.state.entrant.totalQuint)
-      ),
-    )
-
-    var techLevelInfo = e('div', {className: "tech-level-info"},
-      e('div', {className: "bracket"},
-        e('div', null, "BR:"),
-        e('div', null, this.state.entrant.bracketLevel),
-      ),
-      e('div', {className: "crossover"},
-        e('div', null, "XO:"),
-        e('div', null, this.state.entrant.crossoverLevel),
-      ),
-      e('div', {className: "footswitch"},
-        e('div', null, "FS:"),
-        e('div', null, this.state.entrant.footswitchLevel),
-      ),
-      e('div', {className: "jack"},
-        e('div', null, "JA:"),
-        e('div', null, this.state.entrant.jackLevel),
-      ),
-      e('div', {className: "sideswitch"},
-        e('div', null, "SS:"),
-        e('div', null, this.state.entrant.sideswitchLevel),
-      ),
-      e('div', {className: "doublestep"},
-        e('div', null, "DS:"),
-        e('div', null, this.state.entrant.doublestepLevel),
-      ),
-      e('div', {className: "stamina"},
-        e('div', null, "ST:"),
-        e('div', null, this.state.entrant.staminaLevel),
-      ),
-    )
-
-    var ladderEntries = this.state.ladder.map((item, index) =>
-      e('div', {'key': index, className: item.type}, 
-        e('div', {className: "ladder-rank"}, item.rank + ". " + item.name),
-        e('div', {}, formatDifference(item.difference))
+      e(
+        "div",
+        { className: "entrant-points" },
+        e("div", null, "TP:"),
+        e("div", null, ""),
+        e("div", null, this.state.entrant.totalPoints)
       )
     );
 
-    var ladder = e('div', {className: "ladder"}, 
-      e('div', {className: "ladder-title"}, "ITL Online 2023 - Leaderboard"),
+    var songInfo = e(
+      "div",
+      { className: "clear-info" },
+      e(
+        "div",
+        { className: "passes" },
+        e("div", null, "Passes:"),
+        e("div", null, this.state.entrant.totalPass)
+      ),
+      e(
+        "div",
+        { className: "fcs" },
+        e("div", null, "FCs:"),
+        e("div", null, this.state.entrant.totalFc)
+      ),
+      e(
+        "div",
+        { className: "fecs" },
+        e("div", null, "FECs:"),
+        e("div", null, this.state.entrant.totalFec)
+      ),
+      e(
+        "div",
+        { className: "quads" },
+        e("div", null, "Quads:"),
+        e("div", null, this.state.entrant.totalQuad)
+      ),
+      e(
+        "div",
+        { className: "quints" },
+        e("div", null, "Quints:"),
+        e("div", null, this.state.entrant.totalQuint)
+      )
+    );
+
+    var techLevelInfo = e(
+      "div",
+      { className: "tech-level-info" },
+      e(
+        "div",
+        { className: "bracket" },
+        e("div", null, "BR:"),
+        e("div", null, this.state.entrant.bracketLevel)
+      ),
+      e(
+        "div",
+        { className: "crossover" },
+        e("div", null, "XO:"),
+        e("div", null, this.state.entrant.crossoverLevel)
+      ),
+      e(
+        "div",
+        { className: "footswitch" },
+        e("div", null, "FS:"),
+        e("div", null, this.state.entrant.footswitchLevel)
+      ),
+      e(
+        "div",
+        { className: "jack" },
+        e("div", null, "JA:"),
+        e("div", null, this.state.entrant.jackLevel)
+      ),
+      e(
+        "div",
+        { className: "sideswitch" },
+        e("div", null, "SS:"),
+        e("div", null, this.state.entrant.sideswitchLevel)
+      ),
+      e(
+        "div",
+        { className: "doublestep" },
+        e("div", null, "DS:"),
+        e("div", null, this.state.entrant.doublestepLevel)
+      ),
+      e(
+        "div",
+        { className: "stamina" },
+        e("div", null, "ST:"),
+        e("div", null, this.state.entrant.staminaLevel)
+      )
+    );
+
+    var ladderEntries = this.state.ladder.map((player, index) =>
+      e(
+        "div",
+        { key: index, className: player.type },
+        e("div", { className: "ladder-rank" }, `${player.rank}. ${player.name}`),
+        e("div", {}, formatDifference(player.difference))
+      )
+    );
+
+    var ladder = e(
+      "div",
+      { className: "ladder" },
+      e("div", { className: "ladder-title" }, "ITL Online 2023 - Leaderboard"),
       ladderEntries
     );
 
-    return e('div', {className: "wrapper"}, 
-      e('div', {className: "profile-picture"},
-        e('img', {src: (config.avatarSource == "" ? "Avatar.png" : config.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
+    return e(
+      "div",
+      { className: "wrapper" },
+      e(
+        "div",
+        { className: "profile-picture" },
+        e(
+          "img",
+          {
+            src: CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource,
+            "object-fit": "contain",
+            width: "100px",
+            height: "100px",
+          },
+          null
+        )
       ),
       entrantName,
       entrantInfo,
       songInfo,
       techLevelInfo,
       ladder
-    )
+    );
   }
 }
 
-function getInfo() {
-  fetch(config.endpoint + config.entrantId + "/stats")
-    .then((response) => {
-      if (response.ok) { 
-        var json = response.json();
-        return json;
-       }
-      return Promise.reject(response); 
-    })
-    .then((json) => {
-        var data = json["data"]
-
-        // calculate the ranking points difference between the entrant_id and the rest of the ladder
-        for (var i = 0; i < 6; i++) { 
-          data["ladder"][i]['difference'] = data["entrant"]["rankingPoints"] - data["ladder"][i]['rankingPoints'];
-        }
-
-        return data;
-    })
-    .then((data) => {
-      this.setState(data);
-    })
-    .catch((error) => {
-      console.error('Error', error);
-    })
-}
-
-function formatDifference(diff) {
-  if (diff == 0) {
-    return "--";
-  } 
-  else if (diff > 0) {
-    return "+" + diff;
-  }
-  else {
-    return diff;
-  }
-}
-
-var domContainer = document.querySelector('.entrant');
+var domContainer = document.querySelector(".entrant");
 ReactDOM.render(React.createElement(ITLWidget), domContainer);
