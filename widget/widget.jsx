@@ -19,34 +19,36 @@ const REFRESH_INTERVAL = 60000 // 60 seconds in milliseconds
 
 const ITLWidget = () => {
   const [state, setState] = useState({
-    "id": "--",
-    "name": "--",
-    "rank": "---",
-    "rankingPoints": "--",
-    "totalPoints": "--",
-    "totalPass": "---",
-    "totalFC": "--",
-    "totalFec": "--",
-    "totalQuad": "--",
-    "totalQuint": "-",
-    "jackLevel": "-",
-    "crossoverLevel": "-",
-    "bracketLevel": "-",
-    "footswitchLevel": "-",
-    "sideswitchLevel": "-",
-    "doublestepLevel": "-",
-    "staminaLevel": "-",
-    "ladder": [
-      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
-      {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
+    entrant: {
+      id: "--",
+      name: "--",
+      rank: "---",
+      rankingPoints: "--",
+      totalPoints: "--",
+      totalPass: "---",
+      totalFc: "--",
+      totalFec: "--",
+      totalQuad: "--",
+      totalQuint: "-",
+      jackLevel: "-",
+      crossoverLevel: "-",
+      bracketLevel: "-",
+      footswitchLevel: "-",
+      sideswitchLevel: "-",
+      doublestepLevel: "-",
+      staminaLevel: "-"
+    },
+    ladder: [
+      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
     ]
   });
 
-  const format_difference = (diff) => {
+  const formatDifference = (diff) => {
     if (diff == 0) {
       return "--";
     } 
@@ -58,20 +60,24 @@ const ITLWidget = () => {
     }
   }
 
-  const get_info = () => {
-    fetch(CONFIG.endpoint + CONFIG.entrant_id + "/stats")
+  function getInfo() {
+    fetch(config.endpoint + config.entrantId + "/stats")
       .then((response) => {
         if (response.ok) { 
-          var data = response.json();
-          
+          var json = response.json();
+          return json;
+         }
+        return Promise.reject(response); 
+      })
+      .then((json) => {
+          var data = json["data"]
+  
           // calculate the ranking points difference between the entrant_id and the rest of the ladder
           for (var i = 0; i < 6; i++) { 
-            data.ladder[i]['difference'] = data.rankingPoints - data.ladder[i]['rankingPoints'];
+            data["ladder"][i]['difference'] = data["entrant"]["rankingPoints"] - data["ladder"][i]['rankingPoints'];
           }
   
           return data;
-         }
-        return Promise.reject(response); 
       })
       .then((data) => {
         setState(data);
@@ -83,7 +89,7 @@ const ITLWidget = () => {
 
   useEffect(() => {
     // runs at component mount
-    window.componentInterval = setInterval(get_info(), REFRESH_INTERVAL);
+    window.componentInterval = setInterval(getInfo(), REFRESH_INTERVAL);
 
     return () => {
       // runs at component un-mount
@@ -100,89 +106,89 @@ const ITLWidget = () => {
       </div>
 
       <div className="entrant-name">
-        {CONFIG.override_name == "" ? this.state.name : CONFIG.override_name}
+        {CONFIG.override_name == "" ? state.entrant.name : CONFIG.override_name}
       </div>
 
       <div className="entrant-info">
         <div className="entrant-id">
-          <div>ID: {state.id}</div>
+          <div>ID: {state.entrant.id}</div>
         </div>
         <div className="entrant-rank">
-          <div>Rank: {state.rank}</div>
+          <div>Rank: {state.entrant.rank}</div>
         </div>
         <div className="entrant-points">
           <div>RP:</div>
           <div />
-          <div>{state.rankingPoints}</div>
+          <div>{state.entrant.rankingPoints}</div>
         </div>
         <div className="entrant-points">
           <div>TP:</div>
           <div />
-          <div>{state.totalPoints}</div>
+          <div>{state.entrant.totalPoints}</div>
         </div>
       </div>
 
       <div className="clear-info">
         <div className="passes">
           <div>Passes:</div>
-          <div>{state.passes}</div>
+          <div>{state.entrant.passes}</div>
         </div>
         <div className="fcs">
           <div>FCs:</div>
-          <div>{state.fullCombos}</div>
+          <div>{state.entrant.totalFc}</div>
         </div>
         <div className="fecs">
           <div>FECs:</div>
-          <div>{state.fullExcellentCombos}</div>
+          <div>{state.entrant.totalFec}</div>
         </div>
         <div className="quads">
           <div>Quads:</div>
-          <div>{state.quadStars}</div>
+          <div>{state.entrant.totalQuad}</div>
         </div>
         <div className="quints">
           <div>Quints:</div>
-          <div>{state.quintStars}</div>
+          <div>{state.entrant.totalQuint}</div>
         </div>
       </div>
 
       <div className="tech-level-info">
         <div className="bracket">
           <div>BR:</div>
-          <div>{state.bracketLevel}</div>
+          <div>{state.entrant.bracketLevel}</div>
         </div>
         <div className="crossover">
           <div>XO:</div>
-          <div>{state.crossoverLevel}</div>
+          <div>{state.entrant.crossoverLevel}</div>
         </div>
         <div className="footswitch">
           <div>FS:</div>
-          <div>{state.footswitchLevel}</div>
+          <div>{state.entrant.footswitchLevel}</div>
         </div>
         <div className="jack">
           <div>JA:</div>
-          <div>{state.jackLevel}</div>
+          <div>{state.entrant.jackLevel}</div>
         </div>
         <div className="sideswitch">
           <div>SS:</div>
-          <div>{state.sideswitchLevel}</div>
+          <div>{state.entrant.sideswitchLevel}</div>
         </div>
         <div className="doublestep">
           <div>DS:</div>
-          <div>{state.doublestepLevel}</div>
+          <div>{state.entrant.doublestepLevel}</div>
         </div>
         <div className="stamina">
           <div>ST:</div>
-          <div>{state.staminaLevel}</div>
+          <div>{state.entrant.staminaLevel}</div>
         </div>
       </div>
       
       <div className="ladder">
-        <div className="ladder-title">ITL Ladder</div>
+        <div className="ladder-title">ITL Online 2023 - Leaderboard</div>
         {state.ladder.map((item, index) => {
           return (
             <div key={index} className={item.type}>
               <div className="ladder-rank">{`${item.rank} + '. ' + ${item.name}`}</div>
-              <div>{format_difference(item.difference)}</div>
+              <div>{formatDifference(item.difference)}</div>
             </div>
           )
         })}
