@@ -27,6 +27,8 @@ const EMPTY_LADDER_ENTRY = {
   type: "neutral",
 }
 
+const LADDER_LENGTH = 6;
+
 const DEFAULT_STATE = {
   entrant: {
     id: "--",
@@ -48,12 +50,12 @@ const DEFAULT_STATE = {
     staminaLevel: "-",
   },
 
-  ladder: createLadder(6),
+  ladder: createLadder(LADDER_LENGTH),
 };
 
-function createLadder(num) {
+function createLadder(length) {
   const ladder = [];
-  for (let i = 0; i < num; i++) {
+  for (let i = 0; i < length; i++) {
     ladder.push(EMPTY_LADDER_ENTRY)
   }
   return ladder;
@@ -88,7 +90,7 @@ class ITLWidget extends React.Component {
         const data = json.data;
   
         // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < LADDER_LENGTH; i++) {
           data.ladder[i].difference =
             data.entrant.rankingPoints - data.ladder[i].rankingPoints;
         }
