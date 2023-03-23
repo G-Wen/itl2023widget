@@ -16,7 +16,7 @@ const config = {
 }
 
 const e = React.createElement;
-const defaultState = {"id":"--","name":"--","ranking_points":"--","total_points":"--","song_points":"--","bonus_points":"--","passes":"---","full_combos":"--","full_excellent_combos":"--","quad_stars":"--","quint_stars":"-","rival1":null,"rival2":null,"rival3":null,"rank":"---","ladder":[]};
+const defaultState = {"id":"--","name":"--","ranking-points":"--","total-points":"--","song_points":"--","bonus_points":"--","passes":"---","full_combos":"--","full_excellent_combos":"--","quad_stars":"--","quint_stars":"-","rival1":null,"rival2":null,"rival3":null,"rank":"---","ladder":[]};
 
 class ITLWidget extends React.Component {
   constructor(props) {
@@ -34,30 +34,30 @@ class ITLWidget extends React.Component {
   }
 
   render() {
-    var entrantName = e('div', {className: "entrant_name"}, 
+    var entrantName = e('div', {className: "entrant-name"},
         (config.overrideName == "" ? this.state.name : config.overrideName)
     )
 
-    var entrantInfo = e('div', {className: "entrant_info"}, 
-      e('div', {className: "entrant_id"},
+    var entrantInfo = e('div', {className: "entrant-info"},
+      e('div', {className: "entrant-id"},
         e('div', null, "ID: " + this.state.id),
       ),
-      e('div', {className: "entrant_rank"},
+      e('div', {className: "entrant-rank"},
         e('div', null, "Rank: " + this.state.rank),
       ),
-      e('div', {className: "entrant_points"}, 
+      e('div', {className: "entrant-points"},
         e('div', null, "RP:"),
         e('div', null, ""),
         e('div', null, this.state.rankingPoints),
       ),
-      e('div', {className: "entrant_points"}, 
+      e('div', {className: "entrant-points"},
         e('div', null, "TP:"),
         e('div', null, ""),
         e('div', null, this.state.totalPoints),
       ),
     )
 
-    var songInfo = e('div', {className: "clear_info"},
+    var songInfo = e('div', {className: "clear-info"},
       e('div', {className: "passes"},
         e('div', null, "Passes:"),
         e('div', null, this.state.totalPass)
@@ -80,7 +80,7 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    var techLevelInfo = e('div', {className: "tech_level_info"},
+    var techLevelInfo = e('div', {className: "tech-level-info"},
       e('div', {className: "crossover"},
         e('div', null, "XO:"),
         e('div', null, this.state.crossoverLevel),
@@ -113,18 +113,18 @@ class ITLWidget extends React.Component {
 
     var ladderEntries = this.state.ladder.map((item, index) =>
       e('div', {'key': index, className: item.type}, 
-        e('div', {className: "ladder_rank"}, item.rank + ". " + item.name),
+        e('div', {className: "ladder-rank"}, item.rank + ". " + item.name),
         e('div', {}, formatDifference(item.difference))
       )
     );
 
     var ladder = e('div', {className: "ladder"}, 
-      e('div', {className: "ladder_title"}, "ITL Ladder"),
+      e('div', {className: "ladder-title"}, "ITL Ladder"),
       ladderEntries
     );
 
     return e('div', {className: "wrapper"}, 
-      e('div', {className: "profile_picture"}, 
+      e('div', {className: "profile-picture"},
         e('img', {src: (config.avatarSource == "" ? "Avatar.png" : config.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
       ),
       entrantName,
