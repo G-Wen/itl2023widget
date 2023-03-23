@@ -147,7 +147,7 @@ class ITLWidget extends React.Component {
     );
 
     var ladder = e('div', {className: "ladder"}, 
-      e('div', {className: "ladder-title"}, "ITL Ladder"),
+      e('div', {className: "ladder-title"}, "ITL Online 2023 - Leaderboard"),
       ladderEntries
     );
 
