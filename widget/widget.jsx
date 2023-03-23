@@ -94,11 +94,11 @@ const ITLWidget = () => {
 
   useEffect(() => {
     // runs at component mount
-    window.componentInterval = setInterval(getInfo(), REFRESH_INTERVAL);
+    const componentInterval = setInterval(getInfo(), REFRESH_INTERVAL);
 
     return () => {
       // runs at component un-mount
-      clearInterval(window.componentInterval)
+      clearInterval(componentInterval)
     }
   })
 
@@ -192,7 +192,9 @@ const ITLWidget = () => {
         {state.ladder.map((item, index) => {
           return (
             <div key={index} className={item.type}>
-              <div className="ladder-rank">{`${item.rank}. ${item.name}`}</div>
+              <div className="ladder-rank">
+                {item.rank}. {item.name}
+              </div>
               <div>{formatDifference(item.difference)}</div>
             </div>
           )
