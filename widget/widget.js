@@ -27,14 +27,6 @@ const LADDER_ROW = {
   type: "neutral",
 }
 
-const createLadder = (num) => {
-  const ladder = [];
-  for (let i = 0; i < num; i++) {
-    ladder.push(LADDER_ROW)
-  }
-  return ladder;
-}
-
 const DEFAULT_STATE = {
   entrant: {
     id: "--",
@@ -59,33 +51,15 @@ const DEFAULT_STATE = {
   ladder: createLadder(6),
 };
 
-function getInfo() {
-  fetch(CONFIG.endpoint)
-    .then((response) => {
-      if (response.ok) {
-        const json = response.json();
-        return json;
-      }
-      return Promise.reject(response);
-    })
-    .then((json) => {
-      const data = json.data;
-
-      // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
-      for (let i = 0; i < 6; i++) {
-        data.ladder[i].difference =
-          data.entrant.rankingPoints - data.ladder[i].rankingPoints;
-      }
-
-      const newState = Object.assign({}, data, { loaded: true })
-      this.setState(newState);
-    })
-    .catch((error) => {
-      console.error("Error", error);
-    });
+function createLadder(num) {
+  const ladder = [];
+  for (let i = 0; i < num; i++) {
+    ladder.push(LADDER_ROW)
+  }
+  return ladder;
 }
 
-const formatDifference = (difference) => {
+function formatDifference(difference) {
   return difference === 0
     ? "--"
     : difference > 0
@@ -100,12 +74,37 @@ class ITLWidget extends React.Component {
     super(props);
     this.state = DEFAULT_STATE;
     this.state.loaded = false;
-    this.boundGetInfo = getInfo.bind(this)
+  }
+
+  getInfo() {
+    fetch(CONFIG.endpoint)
+      .then((response) => {
+        if (response.ok) {
+          const json = response.json();
+          return json;
+        }
+        return Promise.reject(response);
+      })
+      .then((json) => {
+        const data = json.data;
+  
+        // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
+        for (let i = 0; i < 6; i++) {
+          data.ladder[i].difference =
+            data.entrant.rankingPoints - data.ladder[i].rankingPoints;
+        }
+  
+        const newState = Object.assign({}, data, { loaded: true })
+        this.setState(newState);
+      })
+      .catch((error) => {
+        console.error("Error", error);
+      });
   }
 
   componentDidMount() {
-    this.boundGetInfo();
-    this.interval = setInterval(() => {this.boundGetInfo()}, REFRESH_INTERVAL);
+    this.getInfo();
+    this.interval = setInterval(() => {this.getInfo()}, REFRESH_INTERVAL);
   }
 
   componentWillUnmount() {
@@ -113,11 +112,11 @@ class ITLWidget extends React.Component {
   }
 
   render() {
-    var entrantName = e('div', {className: "entrant-name"},
-        (CONFIG.overrideName == "" ? this.state.entrant.name : CONFIG.overrideName)
+    const entrantName = e('div', {className: "entrant-name"},
+      (CONFIG.overrideName == "" ? this.state.entrant.name : CONFIG.overrideName)
     )
 
-    var entrantInfo = e('div', {className: "entrant-info"},
+    const entrantInfo = e('div', {className: "entrant-info"},
       e('div', {className: "entrant-id"},
         e('div', null, "ID: " + this.state.entrant.id),
       ),
@@ -136,7 +135,7 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    var songInfo = e('div', {className: "clear-info"},
+    const songInfo = e('div', {className: "clear-info"},
       e('div', {className: "passes"},
         e('div', null, "Passes:"),
         e('div', null, this.state.entrant.totalPass)
@@ -159,7 +158,7 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    var techLevelInfo = e('div', {className: "tech-level-info"},
+    const techLevelInfo = e('div', {className: "tech-level-info"},
       e('div', {className: "bracket"},
         e('div', null, "BR:"),
         e('div', null, this.state.entrant.bracketLevel),
@@ -190,14 +189,14 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    var ladderEntries = this.state.ladder.map((player, index) =>
+    const ladderEntries = this.state.ladder.map((player, index) =>
       e('div', {'key': index, className: player.type}, 
         e('div', {className: "ladder-rank"}, `${player.rank}. ${player.name}`),
         e('div', {}, formatDifference(player.difference))
       )
     );
 
-    var ladder = e('div', {className: "ladder"}, 
+    const ladder = e('div', {className: "ladder"}, 
       e('div', {className: "ladder-title"}, "ITL Online 2023 - Leaderboard"),
       ladderEntries
     );
@@ -215,5 +214,5 @@ class ITLWidget extends React.Component {
   }
 }
 
-var domContainer = document.querySelector(".entrant");
+const domContainer = document.querySelector(".entrant");
 ReactDOM.render(React.createElement(ITLWidget), domContainer);

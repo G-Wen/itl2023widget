@@ -28,14 +28,6 @@ const LADDER_ROW = {
   type: "neutral",
 }
 
-const createLadder = (num) => {
-  const ladder = [];
-  for (let i = 0; i < num; i++) {
-    ladder.push(LADDER_ROW)
-  }
-  return ladder;
-}
-
 const DEFAULT_STATE = {
   entrant: {
     id: "--",
@@ -60,7 +52,15 @@ const DEFAULT_STATE = {
   ladder: createLadder(6),
 };
 
-const formatDifference = (difference) => {
+function createLadder(num) {
+  const ladder = [];
+  for (let i = 0; i < num; i++) {
+    ladder.push(LADDER_ROW)
+  }
+  return ladder;
+}
+
+function formatDifference(difference) {
   return difference === 0
     ? "--"
     : difference > 0
