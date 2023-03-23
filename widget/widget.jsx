@@ -59,7 +59,7 @@ const ITLWidget = () => {
   }
 
   const get_info = () => {
-    fetch(CONFIG.endpoint + CONFIG.entrant_id)
+    fetch(CONFIG.endpoint + CONFIG.entrant_id + "/stats")
       .then((response) => {
         if (response.ok) { 
           var data = response.json();

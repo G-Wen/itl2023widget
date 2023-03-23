@@ -2,9 +2,9 @@
 
 const config = {
   // Change this to be the same as your ITL entrant id
-  entrantId: 0,
+  entrantId: 41,
  
-  endpoint: "https://itl2023.groovestats.com/api/widget/",
+  endpoint: "https://itl2023.groovestats.com/api/entrant/",
 
   // Use this to override the name that displays on the widget
   // Useful if your ITL/GS name is over 11 characters
@@ -17,23 +17,25 @@ const config = {
 
 const e = React.createElement;
 const defaultState = {
-  "id": "--",
-  "name": "--",
-  "rank": "---",
-  "rankingPoints": "--",
-  "totalPoints": "--",
-  "totalPass": "---",
-  "totalFC": "--",
-  "totalFec": "--",
-  "totalQuad": "--",
-  "totalQuint": "--",
-  "jackLevel": "-",
-  "crossoverLevel": "-",
-  "bracketLevel": "-",
-  "footswitchLevel": "-",
-  "sideswitchLevel": "-",
-  "doublestepLevel": "-",
-  "staminaLevel": "-",
+  "entrant": {
+    "id": "--",
+    "name": "---",
+    "rank": "---",
+    "rankingPoints": "--",
+    "totalPoints": "--",
+    "totalPass": "---",
+    "totalFC": "--",
+    "totalFec": "--",
+    "totalQuad": "--",
+    "totalQuint": "--",
+    "jackLevel": "-",
+    "crossoverLevel": "-",
+    "bracketLevel": "-",
+    "footswitchLevel": "-",
+    "sideswitchLevel": "-",
+    "doublestepLevel": "-",
+    "staminaLevel": "-",
+  },
   "ladder": [
     {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
     {"rank": "--", "name": "--", "rankingPoints": 0, "difference": 0, "type": "neutral"},
@@ -61,79 +63,79 @@ class ITLWidget extends React.Component {
 
   render() {
     var entrantName = e('div', {className: "entrant-name"},
-        (config.overrideName == "" ? this.state.name : config.overrideName)
+        (config.overrideName == "" ? this.state.entrant.name : config.overrideName)
     )
 
     var entrantInfo = e('div', {className: "entrant-info"},
       e('div', {className: "entrant-id"},
-        e('div', null, "ID: " + this.state.id),
+        e('div', null, "ID: " + this.state.entrant.id),
       ),
       e('div', {className: "entrant-rank"},
-        e('div', null, "Rank: " + this.state.rank),
+        e('div', null, "Rank: " + this.state.entrant.rank),
       ),
       e('div', {className: "entrant-points"},
         e('div', null, "RP:"),
         e('div', null, ""),
-        e('div', null, this.state.rankingPoints),
+        e('div', null, this.state.entrant.rankingPoints),
       ),
       e('div', {className: "entrant-points"},
         e('div', null, "TP:"),
         e('div', null, ""),
-        e('div', null, this.state.totalPoints),
+        e('div', null, this.state.entrant.totalPoints),
       ),
     )
 
     var songInfo = e('div', {className: "clear-info"},
       e('div', {className: "passes"},
         e('div', null, "Passes:"),
-        e('div', null, this.state.totalPass)
+        e('div', null, this.state.entrant.totalPass)
       ),
       e('div', {className: "fcs"},
         e('div', null, "FCs:"),
-        e('div', null, this.state.totalFC)
+        e('div', null, this.state.entrant.totalFC)
       ),
       e('div', {className: "fecs"},
         e('div', null, "FECs:"),
-        e('div', null, this.state.totalFec)
+        e('div', null, this.state.entrant.totalFec)
       ),
       e('div', {className: "quads"},
         e('div', null, "Quads:"),
-        e('div', null, this.state.totalQuad)
+        e('div', null, this.state.entrant.totalQuad)
       ),
       e('div', {className: "quints"},
         e('div', null, "Quints:"),
-        e('div', null, this.state.totalQuint)
+        e('div', null, this.state.entrant.totalQuint)
       ),
     )
 
     var techLevelInfo = e('div', {className: "tech-level-info"},
       e('div', {className: "bracket"},
         e('div', null, "BR:"),
-        e('div', null, this.state.bracketLevel),
+        e('div', null, this.state.entrant.bracketLevel),
       ),
       e('div', {className: "crossover"},
         e('div', null, "XO:"),
-        e('div', null, this.state.crossoverLevel),
+        e('div', null, this.state.entrant.crossoverLevel),
       ),
       e('div', {className: "footswitch"},
         e('div', null, "FS:"),
-        e('div', null, this.state.footswitchLevel),
+        e('div', null, this.state.entrant.footswitchLevel),
       ),
       e('div', {className: "jack"},
         e('div', null, "JA:"),
-        e('div', null, this.state.jackLevel),
+        e('div', null, this.state.entrant.jackLevel),
       ),
       e('div', {className: "sideswitch"},
         e('div', null, "SS:"),
-        e('div', null, this.state.sideswitchLevel),
+        e('div', null, this.state.entrant.sideswitchLevel),
       ),
       e('div', {className: "doublestep"},
         e('div', null, "DS:"),
-        e('div', null, this.state.doublestepLevel),
+        e('div', null, this.state.entrant.doublestepLevel),
       ),
       e('div', {className: "stamina"},
         e('div', null, "ST:"),
-        e('div', null, this.state.staminaLevel),
+        e('div', null, this.state.entrant.staminaLevel),
       ),
     )
 
@@ -163,19 +165,23 @@ class ITLWidget extends React.Component {
 }
 
 function getInfo() {
-  fetch(config.endpoint + config.entrantId)
+  fetch(config.endpoint + config.entrantId + "/stats")
     .then((response) => {
       if (response.ok) { 
-        var data = response.json();
-        
+        var json = response.json();
+        return json;
+       }
+      return Promise.reject(response); 
+    })
+    .then((json) => {
+        var data = json["data"]
+
         // calculate the ranking points difference between the entrant_id and the rest of the ladder
         for (var i = 0; i < 6; i++) { 
-          data.ladder[i]['difference'] = data.rankingPoints - data.ladder[i]['rankingPoints'];
+          data["ladder"][i]['difference'] = data["entrant"]["rankingPoints"] - data["ladder"][i]['rankingPoints'];
         }
 
         return data;
-       }
-      return Promise.reject(response); 
     })
     .then((data) => {
       this.setState(data);
