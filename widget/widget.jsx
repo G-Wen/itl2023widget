@@ -4,7 +4,7 @@ const CONFIG = {
   // Change this to be the same as your ITL entrant id
   entrant_id: 41,
  
-  endpoint: "https://itl2023.groovestats.com/api/widget/",
+  endpoint: "https://itl2023.groovestats.com/api/entrant/",
 
   // Use this to override the name that displays on the widget
   // Useful if your ITL/GS name is over 11 characters
@@ -17,72 +17,77 @@ const CONFIG = {
 
 const REFRESH_INTERVAL = 60000 // 60 seconds in milliseconds
 
-const ITLWidget = () => {
-  const [state, setState] = useState({
-    entrant: {
-      id: "--",
-      name: "--",
-      rank: "---",
-      rankingPoints: "--",
-      totalPoints: "--",
-      totalPass: "---",
-      totalFc: "--",
-      totalFec: "--",
-      totalQuad: "--",
-      totalQuint: "-",
-      jackLevel: "-",
-      crossoverLevel: "-",
-      bracketLevel: "-",
-      footswitchLevel: "-",
-      sideswitchLevel: "-",
-      doublestepLevel: "-",
-      staminaLevel: "-"
-    },
-    ladder: [
-      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-      {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
-    ]
-  });
+const DEFAULT_STATE = {
+  entrant: {
+    id: "--",
+    name: "---",
+    rank: "---",
+    rankingPoints: "--",
+    totalPoints: "--",
+    totalPass: "---",
+    totalFc: "--",
+    totalFec: "--",
+    totalQuad: "--",
+    totalQuint: "--",
+    jackLevel: "-",
+    crossoverLevel: "-",
+    bracketLevel: "-",
+    footswitchLevel: "-",
+    sideswitchLevel: "-",
+    doublestepLevel: "-",
+    staminaLevel: "-",
+  },
+  ladder: [
+    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+    {rank: "--", name: "--", rankingPoints: 0, difference: 0, type: "neutral"},
+  ]
+}
 
-  const formatDifference = (diff) => {
-    if (diff == 0) {
-      return "--";
-    } 
-    else if (diff > 0) {
-      return "+" + diff;
-    }
-    else {
-      return diff;
-    }
+
+const formatDifference = (diff) => {
+  if (diff == 0) {
+    return "--";
+  } 
+  else if (diff > 0) {
+    return "+" + diff;
   }
+  else {
+    return diff;
+  }
+}
 
-  function getInfo() {
+const ITLWidget = () => {
+  const [state, setState] = useState(DEFAULT_STATE);
+
+  const getInfo = () => {
     fetch(config.endpoint + config.entrantId + "/stats")
-      .then((response) => {
+      .then(response => {
         if (response.ok) { 
           var json = response.json();
           return json;
          }
         return Promise.reject(response); 
       })
-      .then((json) => {
-          var data = json["data"]
+
+      .then(json => {
+          const data = json.data
   
           // calculate the ranking points difference between the entrant_id and the rest of the ladder
-          for (var i = 0; i < 6; i++) { 
-            data["ladder"][i]['difference'] = data["entrant"]["rankingPoints"] - data["ladder"][i]['rankingPoints'];
+          for (let i = 0; i < 6; i++) { 
+            data.ladder[i].difference = data.entrant.rankingPoints
+              - data.ladder[i].rankingPoints;
           }
   
           return data;
       })
-      .then((data) => {
+      .then(data => {
         setState(data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error', error);
       })
   }
@@ -131,7 +136,7 @@ const ITLWidget = () => {
       <div className="clear-info">
         <div className="passes">
           <div>Passes:</div>
-          <div>{state.entrant.passes}</div>
+          <div>{state.entrant.totalPass}</div>
         </div>
         <div className="fcs">
           <div>FCs:</div>
