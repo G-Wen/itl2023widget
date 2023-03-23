@@ -2,31 +2,31 @@
 
 const config = {
   // Change this to be the same as your ITL entrant id
-  entrant_id: 41,
+  entrantId: 0,
  
   endpoint: "https://itl2023.groovestats.com/api/widget/",
 
   // Use this to override the name that displays on the widget
   // Useful if your ITL/GS name is over 11 characters
-  override_name: "",
+  overrideName: "",
 
   // Use this to override the avatar source
   // Useful if you want to use a non-png file as an avatar
-  avatar_source: "",
+  avatarSource: "",
 }
 
 const e = React.createElement;
-const default_state = {"id":"--","name":"--","ranking_points":"--","total_points":"--","song_points":"--","bonus_points":"--","passes":"---","full_combos":"--","full_excellent_combos":"--","quad_stars":"--","quint_stars":"-","rival1":null,"rival2":null,"rival3":null,"rank":"---","ladder":[]};
+const defaultState = {"id":"--","name":"--","ranking_points":"--","total_points":"--","song_points":"--","bonus_points":"--","passes":"---","full_combos":"--","full_excellent_combos":"--","quad_stars":"--","quint_stars":"-","rival1":null,"rival2":null,"rival3":null,"rank":"---","ladder":[]};
 
 class ITLWidget extends React.Component {
   constructor(props) {
     super(props);
-    this.state = default_state;
+    this.state = defaultState;
   }
 
   componentDidMount() {
-    get_info.bind(this)();
-    this.interval = setInterval(get_info.bind(this), 60*1000);
+    getInfo.bind(this)();
+    this.interval = setInterval(getInfo.bind(this), 60*1000);
   }
 
   componentWillUnmount() {
@@ -34,11 +34,11 @@ class ITLWidget extends React.Component {
   }
 
   render() {
-    var entrant_name = e('div', {className: "entrant_name"}, 
-        (config.override_name == "" ? this.state.name : config.override_name)
+    var entrantName = e('div', {className: "entrant_name"}, 
+        (config.overrideName == "" ? this.state.name : config.overrideName)
     )
 
-    var entrant_info = e('div', {className: "entrant_info"}, 
+    var entrantInfo = e('div', {className: "entrant_info"}, 
       e('div', {className: "entrant_id"},
         e('div', null, "ID: " + this.state.id),
       ),
@@ -57,7 +57,7 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    var song_info = e('div', {className: "clear_info"}, 
+    var songInfo = e('div', {className: "clear_info"},
       e('div', {className: "passes"},
         e('div', null, "Passes:"),
         e('div', null, this.state.totalPass)
@@ -80,7 +80,7 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    var tech_level_info = e('div', {className: "tech_level_info"}, 
+    var techLevelInfo = e('div', {className: "tech_level_info"},
       e('div', {className: "crossover"},
         e('div', null, "XO:"),
         e('div', null, this.state.crossoverLevel),
@@ -105,35 +105,39 @@ class ITLWidget extends React.Component {
         e('div', null, "DS:"),
         e('div', null, this.state.doublestepLevel),
       ),
+      e('div', {className: "stamina"},
+        e('div', null, "ST:"),
+        e('div', null, this.state.staminaLevel),
+      ),
     )
 
-    var ladder_entries = this.state.ladder.map((item, index) =>
+    var ladderEntries = this.state.ladder.map((item, index) =>
       e('div', {'key': index, className: item.type}, 
         e('div', {className: "ladder_rank"}, item.rank + ". " + item.name),
-        e('div', {}, format_difference(item.difference))
+        e('div', {}, formatDifference(item.difference))
       )
     );
 
     var ladder = e('div', {className: "ladder"}, 
       e('div', {className: "ladder_title"}, "ITL Ladder"),
-      ladder_entries
+      ladderEntries
     );
 
     return e('div', {className: "wrapper"}, 
       e('div', {className: "profile_picture"}, 
-        e('img', {src: (config.avatar_source == "" ? "Avatar.png" : config.avatar_source), "object-fit": "contain", width: "100px", height: "100px"}, null)
+        e('img', {src: (config.avatarSource == "" ? "Avatar.png" : config.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
       ),
-      entrant_name,
-      entrant_info, 
-      song_info,
-      tech_level_info,
+      entrantName,
+      entrantInfo,
+      songInfo,
+      techLevelInfo,
       ladder
     )
   }
 }
 
-function get_info() {
-  fetch(config.endpoint + config.entrant_id)
+function getInfo() {
+  fetch(config.endpoint + config.entrantId)
     .then((response) => {
       if (response.ok) { 
         var data = response.json();
@@ -155,7 +159,7 @@ function get_info() {
     })
 }
 
-function format_difference(diff) {
+function formatDifference(diff) {
   if (diff == 0) {
     return "--";
   } 
