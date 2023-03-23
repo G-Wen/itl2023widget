@@ -24,7 +24,7 @@ const defaultState = {
     "rankingPoints": "--",
     "totalPoints": "--",
     "totalPass": "---",
-    "totalFC": "--",
+    "totalFc": "--",
     "totalFec": "--",
     "totalQuad": "--",
     "totalQuint": "--",
@@ -92,7 +92,7 @@ class ITLWidget extends React.Component {
       ),
       e('div', {className: "fcs"},
         e('div', null, "FCs:"),
-        e('div', null, this.state.entrant.totalFC)
+        e('div', null, this.state.entrant.totalFc)
       ),
       e('div', {className: "fecs"},
         e('div', null, "FECs:"),
