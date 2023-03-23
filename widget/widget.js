@@ -73,7 +73,6 @@ class ITLWidget extends React.Component {
   constructor(props) {
     super(props);
     this.state = DEFAULT_STATE;
-    this.state.loaded = false;
   }
 
   getInfo() {
@@ -94,8 +93,7 @@ class ITLWidget extends React.Component {
             data.entrant.rankingPoints - data.ladder[i].rankingPoints;
         }
   
-        const newState = Object.assign({}, data, { loaded: true })
-        this.setState(newState);
+        this.setState(data);
       })
       .catch((error) => {
         console.error("Error", error);
