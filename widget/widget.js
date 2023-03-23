@@ -19,7 +19,7 @@ const CONFIG = {
   avatarSource: "",
 };
 
-const LADDER_ROW = {
+const EMPTY_LADDER_ENTRY = {
   rank: "--",
   name: "--",
   rankingPoints: 0,
@@ -54,7 +54,7 @@ const DEFAULT_STATE = {
 function createLadder(num) {
   const ladder = [];
   for (let i = 0; i < num; i++) {
-    ladder.push(LADDER_ROW)
+    ladder.push(EMPTY_LADDER_ENTRY)
   }
   return ladder;
 }

@@ -20,7 +20,7 @@ const CONFIG = {
   avatarSource: "",
 };
 
-const LADDER_ROW = {
+const EMPTY_LADDER_ENTRY = {
   rank: "--",
   name: "--",
   rankingPoints: 0,
@@ -53,11 +53,11 @@ const DEFAULT_STATE = {
 };
 
 function createLadder(num) {
-  const ladder = [];
+  const ladderArray = [];
   for (let i = 0; i < num; i++) {
-    ladder.push(LADDER_ROW)
+    ladderArray.push(EMPTY_LADDER_ENTRY)
   }
-  return ladder;
+  return ladderArray;
 }
 
 function formatDifference(difference) {
@@ -115,6 +115,8 @@ const ITLWidget = () => {
 
   if (!loaded) return <></>;
 
+  const { entrant, ladder } = state;
+
   return (
     <div className="wrapper">
       <div className="profile-picture">
@@ -125,85 +127,85 @@ const ITLWidget = () => {
       </div>
 
       <div className="entrant-name">
-        {CONFIG.overrideName == "" ? state.entrant.name : CONFIG.overrideName}
+        {CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName}
       </div>
 
       <div className="entrant-info">
         <div className="entrant-id">
-          <div>ID: {state.entrant.id}</div>
+          <div>ID: {entrant.id}</div>
         </div>
         <div className="entrant-rank">
-          <div>Rank: {state.entrant.rank}</div>
+          <div>Rank: {entrant.rank}</div>
         </div>
         <div className="entrant-points">
           <div>RP:</div>
           <div />
-          <div>{state.entrant.rankingPoints}</div>
+          <div>{entrant.rankingPoints}</div>
         </div>
         <div className="entrant-points">
           <div>TP:</div>
           <div />
-          <div>{state.entrant.totalPoints}</div>
+          <div>{entrant.totalPoints}</div>
         </div>
       </div>
 
       <div className="clear-info">
         <div className="passes">
           <div>Passes:</div>
-          <div>{state.entrant.totalPass}</div>
+          <div>{entrant.totalPass}</div>
         </div>
         <div className="fcs">
           <div>FCs:</div>
-          <div>{state.entrant.totalFc}</div>
+          <div>{entrant.totalFc}</div>
         </div>
         <div className="fecs">
           <div>FECs:</div>
-          <div>{state.entrant.totalFec}</div>
+          <div>{entrant.totalFec}</div>
         </div>
         <div className="quads">
           <div>Quads:</div>
-          <div>{state.entrant.totalQuad}</div>
+          <div>{entrant.totalQuad}</div>
         </div>
         <div className="quints">
           <div>Quints:</div>
-          <div>{state.entrant.totalQuint}</div>
+          <div>{entrant.totalQuint}</div>
         </div>
       </div>
 
       <div className="tech-level-info">
         <div className="bracket">
           <div>BR:</div>
-          <div>{state.entrant.bracketLevel}</div>
+          <div>{entrant.bracketLevel}</div>
         </div>
         <div className="crossover">
           <div>XO:</div>
-          <div>{state.entrant.crossoverLevel}</div>
+          <div>{entrant.crossoverLevel}</div>
         </div>
         <div className="footswitch">
           <div>FS:</div>
-          <div>{state.entrant.footswitchLevel}</div>
+          <div>{entrant.footswitchLevel}</div>
         </div>
         <div className="jack">
           <div>JA:</div>
-          <div>{state.entrant.jackLevel}</div>
+          <div>{entrant.jackLevel}</div>
         </div>
         <div className="sideswitch">
           <div>SS:</div>
-          <div>{state.entrant.sideswitchLevel}</div>
+          <div>{entrant.sideswitchLevel}</div>
         </div>
         <div className="doublestep">
           <div>DS:</div>
-          <div>{state.entrant.doublestepLevel}</div>
+          <div>{entrant.doublestepLevel}</div>
         </div>
         <div className="stamina">
           <div>ST:</div>
-          <div>{state.entrant.staminaLevel}</div>
+          <div>{entrant.staminaLevel}</div>
         </div>
       </div>
 
       <div className="ladder">
         <div className="ladder-title">ITL Online 2023 - Leaderboard</div>
-        {state.ladder.map((player, index) => {
+        {ladder.map((player, index) => {
           return (
             <div key={index} className={player.type}>
               <div className="ladder-rank">
