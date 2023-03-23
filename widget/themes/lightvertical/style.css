@@ -154,11 +154,14 @@
 .ladder-title {
   text-decoration: underline;
   padding-bottom: 1px;
+  padding-left: 3px;
   font-size: 14px;
   background-color: rgba(238, 238, 238);
 }
 .ladder-rank {
   max-height: 17px;
+  padding-left: 3px;
+  padding-right: 3px;
   overflow: hidden;
 }
 .rival{
