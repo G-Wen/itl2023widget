@@ -28,6 +28,8 @@ const EMPTY_LADDER_ENTRY = {
   type: "neutral",
 }
 
+const LADDER_LENGTH = 6;
+
 const DEFAULT_STATE = {
   entrant: {
     id: "--",
@@ -49,7 +51,7 @@ const DEFAULT_STATE = {
     staminaLevel: "-",
   },
 
-  ladder: createLadder(6),
+  ladder: createLadder(LADDER_LENGTH),
 };
 
 function createLadder(num) {
@@ -86,13 +88,13 @@ const ITLWidget = () => {
         const data = json.data;
 
         // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < LADDER_LENGTH; i++) {
           data.ladder[i].difference =
             data.entrant.rankingPoints - data.ladder[i].rankingPoints;
         }
 
         setState(data);
-        setLoaded(true);
+        if (!loaded) setLoaded(true);
       })
       .catch((error) => {
         console.error("Error", error);
@@ -102,11 +104,11 @@ const ITLWidget = () => {
   useEffect(() => {
     // runs at component mount
     getInfo();
-    const refreshInterval = setInterval(() => getInfo(), REFRESH_INTERVAL);
+    const componentInterval = setInterval(() => getInfo(), REFRESH_INTERVAL);
 
     return () => {
       // runs at component un-mount
-      clearInterval(refreshInterval);
+      clearInterval(componentInterval);
     };
 
     /* Will run once on mount, and then whenever getInfo changes (never).
