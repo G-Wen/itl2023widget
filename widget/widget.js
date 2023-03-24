@@ -137,7 +137,7 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    const songInfo = e('div', {className: "clear-info"},
+    const clearInfo = e('div', {className: "clear-info"},
       e('div', {className: "passes"},
         e('div', null, "Passes:"),
         e('div', null, entrant.totalPass)
@@ -209,7 +209,7 @@ class ITLWidget extends React.Component {
       ),
       entrantName,
       entrantInfo,
-      songInfo,
+      clearInfo,
       techLevelInfo,
       ladderList
     )
