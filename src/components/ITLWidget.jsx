@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
+import { config, LADDER_LENGTH, REFRESH_INTERVAL } from "../scripts/config";
+
+// COMPONENT IMPORTS
+import ClearInfo from "./ClearInfo";
+import EntrantInfo from "./EntrantInfo";
+import EntrantName from "./EntrantName";
+import Ladder from "./Ladder";
+import ProfilePicture from "./ProfilePicture";
+import TechLevelInfo from "./TechLevelInfo";
 
 function ITLWidget() {
-  const [state, setState] = useState(DEFAULT_STATE);
+  const [state, setState] = useState(config.DEFAULT_STATE);
   const [loaded, setLoaded] = useState(false);
 
   const getInfo = () => {
-    fetch(CONFIG.endpoint)
+    fetch(config.endpoint)
       .then((response) => {
         if (response.ok) {
           const json = response.json();
@@ -51,103 +60,16 @@ function ITLWidget() {
 
   return (
     <div className="wrapper">
-      <div className="profile-picture">
-        <img
-          src={CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource}
-          style={{ objectFit: "contain", width: "100px", height: "100px" }}
-        />
-      </div>
-
-      <div className="entrant-name">
-        {CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName}
-      </div>
-
-      <div className="entrant-info">
-        <div className="entrant-id">
-          <div>ID: {entrant.id}</div>
-        </div>
-        <div className="entrant-rank">
-          <div>Rank: {entrant.rank}</div>
-        </div>
-        <div className="entrant-points">
-          <div>RP:</div>
-          <div />
-          <div>{entrant.rankingPoints}</div>
-        </div>
-        <div className="entrant-points">
-          <div>TP:</div>
-          <div />
-          <div>{entrant.totalPoints}</div>
-        </div>
-      </div>
-
-      <div className="clear-info">
-        <div className="passes">
-          <div>Passes:</div>
-          <div>{entrant.totalPass}</div>
-        </div>
-        <div className="fcs">
-          <div>FCs:</div>
-          <div>{entrant.totalFc}</div>
-        </div>
-        <div className="fecs">
-          <div>FECs:</div>
-          <div>{entrant.totalFec}</div>
-        </div>
-        <div className="quads">
-          <div>Quads:</div>
-          <div>{entrant.totalQuad}</div>
-        </div>
-        <div className="quints">
-          <div>Quints:</div>
-          <div>{entrant.totalQuint}</div>
-        </div>
-      </div>
-
-      <div className="tech-level-info">
-        <div className="bracket">
-          <div>BR:</div>
-          <div>{entrant.bracketLevel}</div>
-        </div>
-        <div className="crossover">
-          <div>XO:</div>
-          <div>{entrant.crossoverLevel}</div>
-        </div>
-        <div className="footswitch">
-          <div>FS:</div>
-          <div>{entrant.footswitchLevel}</div>
-        </div>
-        <div className="jack">
-          <div>JA:</div>
-          <div>{entrant.jackLevel}</div>
-        </div>
-        <div className="sideswitch">
-          <div>SS:</div>
-          <div>{entrant.sideswitchLevel}</div>
-        </div>
-        <div className="doublestep">
-          <div>DS:</div>
-          <div>{entrant.doublestepLevel}</div>
-        </div>
-        <div className="stamina">
-          <div>ST:</div>
-          <div>{entrant.staminaLevel}</div>
-        </div>
-      </div>
-
-      <div className="ladder">
-        <div className="ladder-title">ITL Online 2023 - Leaderboard</div>
-        {ladder.map((player, index) => {
-          return (
-            <div key={index} className={player.type}>
-              <div className="ladder-rank">
-                {player.rank}. {player.name}
-              </div>
-              <div>{formatDifference(player.difference)}</div>
-            </div>
-          );
-        })}
-      </div>
+      <ProfilePicture
+        url={config.avatarSource == "" ? "Avatar.png" : config.avatarSource}
+      />
+      <EntrantName
+        name={config.overrideName == "" ? entrant.name : config.overrideName}
+      />
+      <EntrantInfo entrant />
+      <ClearInfo entrant />
+      <TechLevelInfo entrant />
+      <Ladder ladder />
     </div>
   );
 }
