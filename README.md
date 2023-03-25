@@ -1,4 +1,4 @@
-# [ITL Online 2023](https://itl2023.groovestats.com) Stream Stats Widget 
+# [ITL Online 2023](https://itl2023.groovestats.com) Stream Stats Widget
 
 ![image](widget_dark.png)
 
@@ -8,7 +8,7 @@ To download the repository you can click on `Code` and then `Download ZIP`:
 
 ![image](download.png)
 
-To run the widget download the repository and follow the instructions in `widget/readme.md`.
+To run the widget download the repository and follow the instructions in `howtouse.md`.
 
 ## Acknowledgements:
 
