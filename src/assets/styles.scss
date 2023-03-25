@@ -1,3 +1,9 @@
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .light {
   color: black;
   font-family: "Bahnschrift", Times, serif;
@@ -137,8 +143,7 @@
       grid-row: 1;
       font-size: 28px;
       font-weight: bold;
-      padding-top: 1px;
-      padding-bottom: 1px;
+      padding: 1px 0px;
       margin-left: 2px;
       white-space: nowrap;
     }
@@ -152,8 +157,7 @@
       .entrant-id {
         font-size: 8px;
         margin-top: -4px;
-        padding-left: 4px;
-        padding-bottom: 4px;
+        padding: 0px 4px;
       }
 
       .entrant-rank {
@@ -163,8 +167,7 @@
 
       .entrant-points {
         font-size: 16px;
-        padding-top: 2px;
-        padding-bottom: 2px;
+        padding: 2px 0px;
         width: 100px;
         display: flex;
         justify-content: space-between;
@@ -174,8 +177,7 @@
     .clear-info {
       grid-column: 3;
       grid-row: 1;
-      padding-top: 30px;
-      padding-right: 15px;
+      padding: 30px 15px 0px 0px;
 
       > * {
         width: 100%;
@@ -189,9 +191,7 @@
     .tech-level-info {
       grid-column: 4;
       grid-row: 1;
-      padding-top: 28px;
-      padding-left: 10px;
-      padding-right: 15px;
+      padding: 28px 15px 0px 10px;
 
       > * {
         font-size: 11px;
@@ -205,22 +205,22 @@
       grid-row: 1;
       font-size: 14px;
 
-      .ladder-title {
+      > div {
         text-decoration: underline;
         padding-bottom: 1px;
         font-size: 14px;
       }
 
-      .ladder-rank {
-        max-height: 17px;
-        overflow: hidden;
-      }
-
-      .ladder-players {
-        > * {
+      > ul {
+        li {
           display: flex;
           justify-content: space-between;
           padding-right: 2px;
+        }
+
+        .ladder-rank {
+          max-height: 17px;
+          overflow: hidden;
         }
       }
     }
@@ -247,8 +247,7 @@
     .profile-picture {
       grid-column: 1;
       grid-row: 1;
-      margin-top: 11px;
-      margin-left: 2px;
+      margin: 11px 0px 0px 2px;
     }
 
     .entrant-name {
@@ -256,8 +255,7 @@
       grid-row: 1;
       font-size: 28px;
       font-weight: bold;
-      padding-top: 1px;
-      padding-bottom: 1px;
+      padding: 1px 0px;
       margin-left: 2px;
       white-space: nowrap;
     }
@@ -271,8 +269,7 @@
       .entrant-id {
         font-size: 8px;
         margin-top: -4px;
-        padding-left: 4px;
-        padding-bottom: 4px;
+        padding: 0px 4px;
       }
 
       .entrant-rank {
@@ -282,8 +279,7 @@
 
       .entrant-points {
         font-size: 16px;
-        padding-top: 2px;
-        padding-bottom: 2px;
+        padding: 2px 0px;
         width: 100px;
         display: flex;
         justify-content: space-between;
@@ -293,8 +289,7 @@
     .clear-info {
       grid-column: 3;
       grid-row: 1;
-      padding-top: 30px;
-      padding-right: 5px;
+      padding: 30px 5px 0px 0px;
 
       > * {
         font-size: 14px;
@@ -307,9 +302,7 @@
     .tech-level-info {
       grid-column: 4;
       grid-row: 1;
-      padding-top: 28px;
-      padding-left: 10px;
-      padding-right: 5px;
+      padding: 28px 5px 0px 10px;
 
       > * {
         font-size: 11px;
@@ -325,25 +318,23 @@
       grid-row: 3;
       font-size: 14px;
       
-      .ladder-title {
+      > div {
         text-decoration: underline;
-        padding-bottom: 1px;
-        padding-left: 3px;
+        padding: 0px 0px 1px 3px;
         font-size: 14px;
       }
-      
-      .ladder-rank {
-        max-height: 17px;
-        padding-left: 3px;
-        padding-right: 3px;
-        overflow: hidden;
-      }
 
-      .ladder-players {
-        > * {
+      > ul {
+        li {
           display: flex;
           justify-content: space-between;
           padding-right: 2px;
+        }
+
+        .ladder-rank {
+          max-height: 17px;
+          padding: 0px 3px;
+          overflow: hidden;
         }
       }
     }

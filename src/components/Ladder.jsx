@@ -3,21 +3,21 @@ import { formatDifference } from "../scripts/util";
 const Ladder = (props) => {
   const { ladder } = props;
   return (
-    <div className="ladder">
-      <div className="ladder-title">ITL Online 2023 - Leaderboard</div>
-      <div className="ladder-players">
+    <section className="ladder">
+      <div>ITL Online 2023 - Leaderboard</div>
+      <ul>
         {ladder.map((player, index) => {
           return (
-            <div key={index} className={player.type}>
+            <li key={index} className={player.type}>
               <div className="ladder-rank">
                 {player.rank}. {player.name}
               </div>
               <div>{formatDifference(player.difference)}</div>
-            </div>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 };
 
