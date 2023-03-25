@@ -109,7 +109,7 @@
 }
 
 .horizontal {
-  &.bgwrap{
+  &.bgwrap {
     background-image: url("../../bg.png");
     background-size: cover;
     background-position: center;
@@ -149,7 +149,7 @@
       padding-top: 4px;
       margin-left: 2px;
 
-      .entrant-id{
+      .entrant-id {
         font-size: 8px;
         margin-top: -4px;
         padding-left: 4px;
@@ -161,7 +161,7 @@
         padding-bottom: 4px;
       }
 
-      .entrant-points{
+      .entrant-points {
         font-size: 16px;
         padding-top: 2px;
         padding-bottom: 2px;
@@ -171,41 +171,14 @@
       }
     }
 
-    .clear-info{
+    .clear-info {
       grid-column: 3;
       grid-row: 1;
       padding-top: 30px;
       padding-right: 15px;
 
-      .passes {
-        grid-template-columns: 100px;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .fcs {
-        font-size: 14px;
-        padding-bottom: 1px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .fecs {
-        font-size: 14px;
-        padding-bottom: 1px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .quads {
-        font-size: 14px;
-        padding-bottom: 1px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .quints {
+      > * {
+        width: 100%;
         font-size: 14px;
         padding-bottom: 1px;
         display: flex;
@@ -213,50 +186,14 @@
       }
     }
 
-    .tech-level-info{
+    .tech-level-info {
       grid-column: 4;
       grid-row: 1;
       padding-top: 28px;
       padding-left: 10px;
       padding-right: 15px;
 
-      .bracket {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .crossover {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .footswitch {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .jack {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .sideswitch {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .doublestep {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .stamina {
+      > * {
         font-size: 11px;
         display: flex;
         justify-content: space-between;
@@ -279,22 +216,12 @@
         overflow: hidden;
       }
 
-      .rival {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 2px;
-      }
-
-      .self {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 2px;
-      }
-
-      .neutral {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 2px;
+      .ladder-players {
+        > * {
+          display: flex;
+          justify-content: space-between;
+          padding-right: 2px;
+        }
       }
     }
   }
@@ -369,35 +296,7 @@
       padding-top: 30px;
       padding-right: 5px;
 
-      .passes {
-        grid-template-columns: 100px;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .fcs {
-        font-size: 14px;
-        padding-bottom: 1px;
-        display: flex;
-        justify-content: space-between;
-      }
-      
-      .fecs {
-        font-size: 14px;
-        padding-bottom: 1px;
-        display: flex;
-        justify-content: space-between;
-      }
-      
-      .quads {
-        font-size: 14px;
-        padding-bottom: 1px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .quints {
+      > * {
         font-size: 14px;
         padding-bottom: 1px;
         display: flex;
@@ -412,43 +311,7 @@
       padding-left: 10px;
       padding-right: 5px;
 
-      .bracket {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .crossover {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .footswitch {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .jack {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .sideswitch {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .doublestep {
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .stamina {
+      > * {
         font-size: 11px;
         display: flex;
         justify-content: space-between;
@@ -476,22 +339,12 @@
         overflow: hidden;
       }
 
-      .rival {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 2px;
-      }
-      
-      .self {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 2px;
-      }
-
-      .neutral {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 2px;
+      .ladder-players {
+        > * {
+          display: flex;
+          justify-content: space-between;
+          padding-right: 2px;
+        }
       }
     }
   }
