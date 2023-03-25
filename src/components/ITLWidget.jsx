@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { config, LADDER_LENGTH, REFRESH_INTERVAL } from "../scripts/config";
 
+import "../assets/styles.scss";
+
 // COMPONENT IMPORTS
 import ClearInfo from "./ClearInfo";
 import EntrantInfo from "./EntrantInfo";
@@ -59,17 +61,19 @@ function ITLWidget() {
   const { entrant, ladder } = state;
 
   return (
-    <div className="wrapper">
-      <ProfilePicture
-        url={config.avatarSource == "" ? "Avatar.png" : config.avatarSource}
-      />
-      <EntrantName
-        name={config.overrideName == "" ? entrant.name : config.overrideName}
-      />
-      <EntrantInfo entrant />
-      <ClearInfo entrant />
-      <TechLevelInfo entrant />
-      <Ladder ladder />
+    <div className={`${config.currentStyle} bgwrap`}>
+      <div className="wrapper">
+        <ProfilePicture
+          url={config.avatarSource == "" ? "Avatar.png" : config.avatarSource}
+        />
+        <EntrantName
+          name={config.overrideName == "" ? entrant.name : config.overrideName}
+        />
+        <EntrantInfo entrant={entrant} />
+        <ClearInfo entrant={entrant} />
+        <TechLevelInfo entrant={entrant} />
+        <Ladder ladder={ladder} />
+      </div>
     </div>
   );
 }
