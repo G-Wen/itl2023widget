@@ -1,177 +1,58 @@
-.bgwrap{
-  background-image: url("../../bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+@import url("../common.css");
+
+.bgwrap {
   max-width: 620px;
-  height: 124px;
 }
+
 .wrapper {
-  display: grid;
   grid-template-columns: 105px 125px 110px 70px 200px;
   gap: 2px;
   grid-auto-rows: 33px minmax(0px, 140px);
-  font-family: "Bahnschrift", Times, serif;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  height: 124px;
-}
-.profile-picture {
-  grid-column: 1;
-  grid-row: 1;
-  margin-top: 11px;
-  margin-left: 2px;
-}
-.entrant-name {
-  grid-column: 2;
-  grid-row: 1;
-  font-size: 28px;
-  font-weight: bold;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  margin-left: 2px;
-  white-space: nowrap;
 }
 
-.entrant-info {
-  grid-column: 2;
-  grid-row: 2;
-  padding-top: 4px;
-  margin-left: 2px;
-}
-.entrant-id{
-  font-size: 8px;
-  margin-top: -4px;
-  padding-left: 4px;
-  padding-bottom: 4px;
+.entrant-id {
   color: #aaaaaa;
 }
-.entrant-rank {
-  font-size: 18px;
-  padding-bottom: 4px;
-}
-.entrant-points{
-  font-size: 16px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  width: 100px;
-  display: flex;
-  justify-content: space-between;
-}
 
-.clear-info{
-  grid-column: 3;
-  grid-row: 1;
-  padding-top: 30px;
+.clear-info {
   padding-right: 15px;
 }
-.passes{
-  grid-template-columns: 100px;
-  font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-}
-.fcs{
-  font-size: 14px;
-  padding-bottom: 1px;
+
+.fcs {
   color: lightgreen;
-  display: flex;
-  justify-content: space-between;
-}
-.fecs{
-  font-size: 14px;
-  padding-bottom: 1px;
-  color: goldenrod;
-  display: flex;
-  justify-content: space-between;
-}
-.quads{
-  font-size: 14px;
-  padding-bottom: 1px;
-  color: skyblue;
-  display: flex;
-  justify-content: space-between;
-}
-.quints{
-  font-size: 14px;
-  padding-bottom: 1px;
-  color: pink;
-  display: flex;
-  justify-content: space-between;
 }
 
-.tech-level-info{
-  grid-column: 4;
-  grid-row: 1;
-  padding-top: 28px;
-  padding-left: 10px;
+.fecs {
+  color: goldenrod;
+}
+
+.quads {
+  color: skyblue;
+}
+
+.quints {
+  color: pink;
+}
+
+.tech-level-info {
   padding-right: 15px;
-}
-.crossover{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
-}
-.bracket{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
-}
-.footswitch{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
-}
-.jack{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
-}
-.sideswitch{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
-}
-.doublestep{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
-}
-.stamina{
-  font-size: 11px;
-  display: flex;
-  justify-content: space-between;
 }
 
 .ladder {
   grid-column: 5;
   grid-row: 1;
-  font-size: 14px;
 }
-.ladder-title {
-  text-decoration: underline;
-  padding-bottom: 1px;
-  font-size: 14px;
-}
-.ladder-rank {
-  max-height: 17px;
-  overflow: hidden;
-}
-.rival{
+
+.rival {
   background-color: rgba(152, 102, 102, 0.5);
-  display: flex;
-  justify-content: space-between;
-  padding-right: 2px;
 }
-.self{
+
+.self {
   background-color: rgba(102, 152, 102, 0.5);
-  display: flex;
-  justify-content: space-between;
-  padding-right: 2px;
 }
-.neutral{
+
+.neutral {
   background-color: rgba(170, 170, 170, 0.5);
-  display: flex;
-  justify-content: space-between;
-  padding-right: 2px;
 }
