@@ -18,5 +18,8 @@
   "homepage": "https://github.com/JonJWong/itl2023widget#readme",
   "dependencies": {
     "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.29"
   }
 }
