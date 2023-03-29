@@ -246,11 +246,7 @@ class ITLWidget extends React.Component {
     );
 
     const techLevelInfo = e("div", { className: "tech-level-info" },
-      e("canvas", {
-        id: "canvas",
-        className: "dead-end",
-        grooveRadar: "special",
-      })
+      e("canvas", {id: "canvas", className: "dead-end", grooveRadar: "special"})
     );
 
     const ladderEntries = ladder.map((player, index) =>
