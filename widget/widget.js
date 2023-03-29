@@ -174,7 +174,6 @@ class ITLWidget extends React.Component {
           entrant,
           ladder,
         });
-        drawGrooveRadar(entrant);
       })
       .catch((error) => {
         console.error("Error", error);
@@ -260,6 +259,12 @@ class ITLWidget extends React.Component {
       e("li", { className: "ladder-title" }, "ITL Online 2023 - Leaderboard"),
       ladderEntries
     );
+
+    /* Check if information has been acquired and state has been set before rendering grooveRadar.
+      Necessary because grooveRadar relies on information acquired from backend, throws errors if not loaded. */
+    if (typeof entrant.id === "number") {
+      drawGrooveRadar(entrant)
+    }
 
     return e("section", { className: "wrapper" },
       profilePicture,
