@@ -1,0 +1,38 @@
+.bgwrap {
+  max-width: 620px;
+}
+
+.wrapper {
+  height: calc(100% - 1rem);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: .5rem;
+  color: black;
+}
+
+.rival {
+  background-color: rgba(221, 204, 204);
+}
+
+.self {
+  background-color: rgba(204, 221, 204);
+}
+
+.neutral {
+  background-color: rgba(238, 238, 238);
+}
+
+.fcs {
+  color: #007800;
+}
+
+.fecs {
+  color: #daa520;
+}
+
+.quads {
+  color: #34a2d0;
+}
+
+.quints {
+  color: #ee637b;
+}

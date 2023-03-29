@@ -273,5 +273,5 @@ function drawGrooveRadar(entrantInfo) {
   }
 }
 
-const domContainer = document.querySelector(".entrant");
+const domContainer = document.querySelector(".bgwrap");
 ReactDOM.render(React.createElement(ITLWidget), domContainer);
