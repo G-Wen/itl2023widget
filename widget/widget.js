@@ -36,6 +36,7 @@ const DEFAULT_STATE = {
     rank: "---",
     rankingPoints: "--",
     totalPoints: "--",
+    totalTechLevel: "--",
     totalPass: "---",
     totalFc: "--",
     totalFec: "--",
@@ -94,8 +95,12 @@ class ITLWidget extends React.Component {
           data.ladder[i].difference =
             data.entrant.rankingPoints - data.ladder[i].rankingPoints;
         }
-  
+
+        data.entrant.techLevels = [data.entrant.crossoverLevel, data.entrant.sideswitchLevel, data.entrant.footswitchLevel, data.entrant.jackLevel, data.entrant.doublestepLevel, data.entrant.bracketLevel, data.entrant.staminaLevel]
+        data.entrant.totalTechLevel = data.entrant.techLevels.reduce((a, b) => a + b, 0);
+
         this.setState(data);
+        drawGrooveRadar(data.entrant);
       })
       .catch((error) => {
         console.error("Error", error);
@@ -104,10 +109,8 @@ class ITLWidget extends React.Component {
 
   componentDidMount() {
     this.getInfo();
-    draw();
     this.interval = setInterval(() => {
       this.getInfo(); 
-      draw();
     }, REFRESH_INTERVAL);
   }
 
@@ -123,11 +126,10 @@ class ITLWidget extends React.Component {
     )
 
     const entrantInfo = e('div', {className: "entrant-info"},
-      e('div', {className: "entrant-id"},
-        e('div', null, "ID: " + entrant.id),
-      ),
       e('div', {className: "entrant-rank"},
-        e('div', null, "Rank: " + entrant.rank),
+        e('div', null, "Rank: "),
+        e('div', null, ""),
+        e('div', null, entrant.rank),
       ),
       e('div', {className: "entrant-points"},
         e('div', null, "RP:"),
@@ -138,6 +140,11 @@ class ITLWidget extends React.Component {
         e('div', null, "TP:"),
         e('div', null, ""),
         e('div', null, entrant.totalPoints),
+      ),
+      e('div', {className: "entrant-points"},
+        e('div', null, "TTL:"),
+        e('div', null, ""),
+        e('div', null, entrant.totalTechLevel),
       ),
     )
 
@@ -164,37 +171,6 @@ class ITLWidget extends React.Component {
       ),
     )
 
-    const techLevelInfo = e('div', {className: "tech-level-info"},
-      e('div', {className: "bracket"},
-        e('div', null, "BR:"),
-        e('div', null, entrant.bracketLevel),
-      ),
-      e('div', {className: "crossover"},
-        e('div', null, "XO:"),
-        e('div', null, entrant.crossoverLevel),
-      ),
-      e('div', {className: "footswitch"},
-        e('div', null, "FS:"),
-        e('div', null, entrant.footswitchLevel),
-      ),
-      e('div', {className: "jack"},
-        e('div', null, "JA:"),
-        e('div', null, entrant.jackLevel),
-      ),
-      e('div', {className: "sideswitch"},
-        e('div', null, "SS:"),
-        e('div', null, entrant.sideswitchLevel),
-      ),
-      e('div', {className: "doublestep"},
-        e('div', null, "DS:"),
-        e('div', null, entrant.doublestepLevel),
-      ),
-      e('div', {className: "stamina"},
-        e('div', null, "ST:"),
-        e('div', null, entrant.staminaLevel),
-      ),
-    )
-
     const ladderEntries = ladder.map((player, index) =>
       e('div', {'key': index, className: player.type}, 
         e('div', {className: "ladder-rank"}, `${player.rank}. ${player.name}`),
@@ -207,7 +183,11 @@ class ITLWidget extends React.Component {
       ladderEntries
     );
 
-    const can = e('canvas', {width: 20, height: 30});
+    const grooveRadar = e('canvas', {id: "canvas", className: "groove-radar", special: true, width: 100, height: 100});
+
+    const techLevelInfo = e('div', {className: "tech-level-info"},
+      grooveRadar,
+    )
 
     return e('div', {className: "wrapper"}, 
       e('div', {className: "profile-picture"},
@@ -216,20 +196,66 @@ class ITLWidget extends React.Component {
       entrantName,
       entrantInfo,
       clearInfo,
-      can,
+      techLevelInfo,
       ladderList,
     )
   }
 }
 
-function draw() {
-  // draw needs to  actually draw the shape but for now I'd just like it to draw something
+function normalizeTechLevels(techLevels) {
+  const maxLevel = Math.max(...techLevels);
+  return techLevels.map(techLevel => (techLevel / maxLevel));
+}
+
+function drawGrooveRadar(entrantInfo) {
   const canvas = document.getElementById("canvas");
-  if (canvas.getContext) {
+  const rads = 2 * Math.PI / 7;
+  const techLabels = ["XO", "SS", "FS", "JA", "DS", "BR", "ST"];
+  const techLevels = normalizeTechLevels(entrantInfo.techLevels);
+
+  if (canvas && canvas.getContext) {
+    const lightTheme = window.getComputedStyle(document.querySelector(".wrapper")).getPropertyValue("background-color") == "rgba(255, 255, 255, 0.8)";
     const ctx = canvas.getContext("2d");
-    ctx.fillRect(25, 25, 100, 100);
-    ctx.clearRect(45, 45, 60, 60);
-    ctx.strokeRect(50, 50, 50, 50);
+    ctx.font = lightTheme ? "9px sanserif" : "9px sanserif";
+    ctx.fillStyle = lightTheme ? "black" : "white";
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(50, 50);
+
+    for (let i = 0; i < 8; i++){
+      var ang = rads * i - (Math.PI/2);
+      var xcomp= Math.cos(ang) * 43
+      var ycomp = Math.sin(ang) * 43
+      var xval= xcomp * techLevels[i] * 0.9
+      var yval= ycomp * techLevels[i] * 0.9
+      i == 0 ? ctx.moveTo(xval+50, yval+50) : ctx.lineTo(xval+50, yval+50);
+      i == 0 ? null : ctx.fillText(techLabels[i%7], xcomp+45, ycomp+52);
+    }
+    const gradient = ctx.createRadialGradient(50, 50, 10, 50, 50, 60);
+    if (lightTheme) {
+      gradient.addColorStop(0, "rgb(140, 140, 240, 0.4)");
+      gradient.addColorStop(0.3, "rgb(100, 100, 200, 0.8)");
+      gradient.addColorStop(0.6, "rgb(40, 40, 200, 0.95)");
+    } else {
+      gradient.addColorStop(0, "rgb(240, 240, 240, 0.4)");
+      gradient.addColorStop(0.3, "rgb(240, 240, 240, 0.8)");
+      gradient.addColorStop(0.6, "rgb(140, 140, 240, 0.95)");
+    }
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    // idk how to draw the bounding septagon in a nice way
+    /*
+    ctx.moveTo(50, 50);
+    for (let i = 0; i < 8; i++){
+      var ang = rads * i - (Math.PI/2);
+      var xcomp= Math.cos(ang) * 40
+      var ycomp = Math.sin(ang) * 40
+      i == 0 ? ctx.moveTo(xcomp+50, ycomp+50) : ctx.lineTo(xcomp+50, ycomp+50);
+    }
+    ctx.stroke();
+    */
   }
 }
 

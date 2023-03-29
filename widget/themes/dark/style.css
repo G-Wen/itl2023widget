@@ -5,7 +5,7 @@
 }
 
 .wrapper {
-  grid-template-columns: 105px 125px 110px 70px 200px;
+  grid-template-columns: 105px 100px 90px 110px 205px;
   gap: 2px;
   grid-auto-rows: 33px minmax(0px, 140px);
   background-color: rgba(0, 0, 0, 0.7);
@@ -14,10 +14,6 @@
 
 .entrant-id {
   color: #aaaaaa;
-}
-
-.clear-info {
-  padding-right: 15px;
 }
 
 .fcs {
@@ -36,13 +32,10 @@
   color: pink;
 }
 
-.tech-level-info {
-  padding-right: 15px;
-}
-
 .ladder {
   grid-column: 5;
   grid-row: 1;
+  padding-left: 4px;
 }
 
 .rival {
