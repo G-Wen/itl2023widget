@@ -1,0 +1,100 @@
+.bgwrap {
+  background-image: url("../bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 124px;
+}
+
+.wrapper {
+  display: grid;
+  font-family: "Bahnschrift", Times, serif;
+  height: 124px;
+}
+
+.entrant-id {
+  font-size: 8px;
+  margin-top: -4px;
+  padding: 0px 0px 4px 4px;
+}
+
+.entrant-name {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 1px 0px;
+  margin-left: 2px;
+  white-space: nowrap;
+}
+
+.profile-picture {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 11px 0px 0px 2px;
+}
+
+.profile-picture > img {
+  object-fit: contain;
+  width: 100px;
+  height: 100px;
+}
+
+.entrant-info {
+  grid-column: 2;
+  grid-row: 2;
+  padding-top: 1px;
+  margin-left: 2px;
+}
+
+.entrant-row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2px;
+  font-size: 15px;
+  width: 90px;
+}
+
+.entrant-rank.entrant-row {
+  font-size: 18px;
+  padding-bottom: 2px;
+}
+
+.clear-info {
+  grid-column: 3;
+  grid-row: 1;
+  padding: 30px 0px 0px 10px;
+}
+
+.clear-info-row {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tech-level-info {
+  grid-column: 4;
+  grid-row: 1;
+  padding: 28px 0px 0px 5px;
+}
+
+.ladder {
+  font-size: 14px;
+}
+
+.ladder-title {
+  text-decoration: underline;
+  padding-bottom: 1px;
+  font-size: 14px;
+}
+
+.ladder-rank {
+  max-height: 17px;
+  overflow: hidden;
+}
+
+.ladder-entry {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 2px;
+}
