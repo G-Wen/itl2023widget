@@ -42,13 +42,13 @@ const DEFAULT_STATE = {
     totalFec: "--",
     totalQuad: "--",
     totalQuint: "--",
-    jackLevel: "-",
-    crossoverLevel: "-",
-    bracketLevel: "-",
-    footswitchLevel: "-",
-    sideswitchLevel: "-",
-    doublestepLevel: "-",
-    staminaLevel: "-",
+    jackLevel: 0,
+    crossoverLevel: 0,
+    bracketLevel: 0,
+    footswitchLevel: 0,
+    sideswitchLevel: 0,
+    doublestepLevel: 0,
+    staminaLevel: 0,
   },
 
   ladder: createLadder(LADDER_LENGTH),
@@ -98,10 +98,7 @@ class ITLWidget extends React.Component {
 
         data.entrant.techLevels = [data.entrant.crossoverLevel, data.entrant.sideswitchLevel, data.entrant.footswitchLevel, data.entrant.jackLevel, data.entrant.doublestepLevel, data.entrant.bracketLevel, data.entrant.staminaLevel]
 
-        // prevent some division by 0 down the line
-        data.entrant.techLevels = data.entrant.techLevels.map(x => x+1);
-
-        data.entrant.totalTechLevel = data.entrant.techLevels.reduce((a, b) => a + b, -7);
+        data.entrant.totalTechLevel = data.entrant.techLevels.reduce((a, b) => a + b, 0);
 
         this.setState(data);
         drawGrooveRadar(data.entrant);
@@ -207,7 +204,7 @@ class ITLWidget extends React.Component {
 }
 
 function normalizeTechLevels(techLevels) {
-  const maxLevel = Math.max(...techLevels);
+  const maxLevel = Math.max(...techLevels, 1);
   return techLevels.map(techLevel => (techLevel / maxLevel));
 }
 
