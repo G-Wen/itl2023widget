@@ -182,86 +182,84 @@ const ITLWidget = () => {
   const { entrant, ladder } = state;
 
   return (
-    <div className='wrapper'>
-      <div className='profile-picture'>
-        <img
-          src={CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource}
-        />
-      </div>
-
-      <div className='entrant-name'>
+    <section className='wrapper'>
+      <img
+        className='profile-picture'
+        src={CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource}
+      />
+      <h2>
         {CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName}
-      </div>
+      </h2>
 
-      <div className='entrant-info'>
-        <div className='entrant-id'>
-          <div>ID: {entrant.id}</div>
-        </div>
-        <div className='entrant-rank'>
-          <div>Rank: {entrant.rank}</div>
-        </div>
-        <div className='entrant-points'>
-          <div>RP:</div>
-          <div />
-          <div>{entrant.rankingPoints}</div>
-        </div>
-        <div className='entrant-points'>
-          <div>TP:</div>
-          <div />
-          <div>{entrant.totalPoints}</div>
-        </div>
-      </div>
+      <ul className='entrant-info'>
+        <li className='entrant-rank'>
+          <span>Rank: </span>
+          <span>{entrant.rank}</span>
+        </li>
+        <li>
+          <span>RP:</span>
+          <span>{entrant.rankingPoints}</span>
+        </li>
+        <li>
+          <span>TP:</span>
+          <span>{entrant.totalPoints}</span>
+        </li>
+        <li>
+          <span>TTL:</span>
+          <span>{entrant.totalTechLevel}</span>
+        </li>
+      </ul>
 
-      <div className='clear-info'>
-        <div className='passes clear-info-row'>
-          <div>Passes:</div>
-          <div>{entrant.totalPass}</div>
-        </div>
-        <div className='fcs clear-info-row'>
-          <div>FCs:</div>
-          <div>{entrant.totalFc}</div>
-        </div>
-        <div className='fecs clear-info-row'>
-          <div>FECs:</div>
-          <div>{entrant.totalFec}</div>
-        </div>
-        <div className='quads clear-info-row'>
-          <div>Quads:</div>
-          <div>{entrant.totalQuad}</div>
-        </div>
-        <div className='quints clear-info-row'>
-          <div>Quints:</div>
-          <div>{entrant.totalQuint}</div>
-        </div>
-      </div>
+      <ul className='clear-info'>
+        <li className='passes'>
+          <span>Passes:</span>
+          <span>{entrant.totalPass}</span>
+        </li>
+        <li className='fcs'>
+          <span>FCs:</span>
+          <span>{entrant.totalFc}</span>
+        </li>
+        <li className='fecs'>
+          <span>FECs:</span>
+          <span>{entrant.totalFec}</span>
+        </li>
+        <li className='quads'>
+          <span>Quads:</span>
+          <span>{entrant.totalQuad}</span>
+        </li>
+        <li className='quints'>
+          <span>Quints:</span>
+          <span>{entrant.totalQuint}</span>
+        </li>
+      </ul>
 
       <div className='tech-level-info'>
-        <div
+        <canvas
           id='canvas'
           className='dead-end'
           grooveRadar='special'
         />
       </div>
 
-      <div className='ladder'>
-        <div className='ladder-title'>ITL Online 2023 - Leaderboard</div>
+      <ul className='ladder'>
+        <li className='ladder-title'>ITL Online 2023 - Leaderboard</li>
         {ladder.map((player, index) => {
           return (
-            <div
+            <li
               key={index}
               className={player.type}
             >
-              <div className='ladder-rank'>
+              <span className='ladder-rank'>
                 {player.rank}. {player.name}
-              </div>
-              <div>{formatDifference(player.difference)}</div>
-            </div>
+              </span>
+              <span>{formatDifference(player.difference)}</span>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 };
 
-const root = ReactDOM.createRoot(document.getElementById("entrant"));
+const root = ReactDOM.createRoot(document.querySelector("bgwrap"));
 root.render(<ITLWidget />);

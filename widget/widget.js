@@ -183,6 +183,14 @@ class ITLWidget extends React.Component {
       )
     );
 
+    const techLevelInfo = e("div", { className: "tech-level-info" },
+      e("canvas", {
+        id: "canvas",
+        className: "dead-end",
+        grooveRadar: "special",
+      })
+    );
+
     const ladderEntries = ladder.map((player, index) =>
       e("li", { key: index, className: player.type },
         e("span", { className: "ladder-rank" }, `${player.rank}. ${player.name}`),
@@ -193,16 +201,6 @@ class ITLWidget extends React.Component {
     const ladderList = e("ul", { className: "ladder" },
       e("li", { className: "ladder-title" }, "ITL Online 2023 - Leaderboard"),
       ladderEntries
-    );
-
-    const grooveRadar = e("canvas", {
-      id: "canvas",
-      className: "dead-end",
-      grooveRadar: "special",
-    });
-
-    const techLevelInfo = e("div", { className: "tech-level-info" },
-      grooveRadar
     );
 
     return e("section", { className: "wrapper" },
