@@ -119,18 +119,6 @@ function drawGrooveRadar(entrantInfo) {
     }
     ctx.fillStyle = gradient;
     ctx.fill();
-
-    // idk how to draw the bounding septagon in a nice way
-    /*
-    ctx.moveTo(50, 50);
-    for (let i = 0; i < 8; i++){
-      var ang = rads * i - (Math.PI/2);
-      var xcomp= Math.cos(ang) * 40
-      var ycomp = Math.sin(ang) * 40
-      i == 0 ? ctx.moveTo(xcomp+50, ycomp+50) : ctx.lineTo(xcomp+50, ycomp+50);
-    }
-    ctx.stroke();
-    */
   }
 }
 
@@ -152,7 +140,7 @@ class ITLWidget extends React.Component {
       .then((json) => {
         const { entrant, ladder } = json.data;
 
-        // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
+        // Calculate the ranking points difference between the current entrant and the rest of the ladder
         for (let i = 0; i < CONFIG.ladderLength; i++) {
           ladder[i].difference =
             entrant.rankingPoints - ladder[i].rankingPoints;
