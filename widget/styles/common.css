@@ -69,7 +69,7 @@ html {
 .ladder-entry {
   display: flex;
   justify-content: space-between;
-  padding-right: .2rem;
+  padding: 0 .3rem;
 }
 
 .tech-level-info {
