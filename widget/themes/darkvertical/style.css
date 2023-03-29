@@ -1,11 +1,11 @@
 @import url("../common.css");
 
 .bgwrap {
-  width: 410px;
+  width: 405px;
 }
 
 .wrapper {
-  grid-template-columns: 105px 125px 110px 70px;
+  grid-template-columns: 105px 100px 90px 110px;
   gap: 0px;
   grid-auto-rows: 33px minmax(0px, 124px) minmax(0px, 140px);
   background-color: rgba(0, 0, 0, 0.7);
@@ -14,10 +14,6 @@
 
 .entrant-id {
   color: #aaaaaa;
-}
-
-.clear-info {
-  padding-right: 5px;
 }
 
 .fcs {
@@ -34,10 +30,6 @@
 
 .quints {
   color: pink;
-}
-
-.tech-level-info {
-  padding-right: 5px;
 }
 
 .ladder {
