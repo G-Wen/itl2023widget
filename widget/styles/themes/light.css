@@ -4,8 +4,8 @@
 
 .wrapper {
   height: calc(100% - 1rem);
-  background-color: var(--light-wrapper-bg);
   padding: .5rem;
+  background-color: var(--light-wrapper-bg);
   color: black;
 }
 
