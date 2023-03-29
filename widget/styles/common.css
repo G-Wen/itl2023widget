@@ -11,15 +11,6 @@ html {
   height: 12.4rem;
 }
 
-.profile-picture {
-  width: 10rem;
-  height: 10rem;
-}
-
-.profile-picture > img {
-  object-fit: contain;
-}
-
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -27,7 +18,21 @@ html {
   align-items: flex-end;
 }
 
-.entrant-name {
+.wrapper > img {
+  width: 10rem;
+  height: 10rem;
+  object-fit: contain;
+}
+
+.entrant-info > li {
+  display: flex;
+  justify-content: space-between;
+  padding-top: .2rem;
+  font-size: 1.5rem;
+  width: 9rem;
+}
+
+.wrapper > h2 {
   position: absolute;
   font-size: 2.8rem;
   font-weight: bold;
@@ -37,39 +42,9 @@ html {
   white-space: nowrap;
 }
 
-.entrant-row {
-  display: flex;
-  justify-content: space-between;
-  padding-top: .2rem;
-  font-size: 1.5rem;
-  width: 9rem;
-}
-
-.entrant-rank.entrant-row {
+.entrant-rank {
   font-size: 1.8rem;
   padding-bottom: .2rem;
-}
-
-.ladder {
-  font-size: 1.4rem;
-  min-width: 15rem;
-}
-
-.ladder-title {
-  text-decoration: underline;
-  padding-bottom: .1rem;
-  font-size: 1.4rem;
-}
-
-.ladder-rank {
-  max-height: 1.7rem;
-  overflow: hidden;
-}
-
-.ladder-entry {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 .3rem;
 }
 
 .tech-level-info {
@@ -77,8 +52,35 @@ html {
   height: 10rem;
 }
 
-.clear-info-row {
+.clear-info, .ladder {
   font-size: 1.4rem;
+}
+
+.clear-info {
+  min-width: 8rem;
+}
+
+.clear-info > li {
   display: flex;
   justify-content: space-between;
+}
+
+.ladder {
+  min-width: 15rem;
+}
+
+.ladder-title {
+  text-decoration: underline;
+  padding-bottom: .1rem;
+}
+
+.ladder-rank {
+  max-height: 1.7rem;
+  overflow: hidden;
+}
+
+.ladder > li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 .3rem;
 }

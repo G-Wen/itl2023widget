@@ -3,21 +3,17 @@
   ex. ENTRANT_ID = 99; */
 const ENTRANT_ID = 41;
 
-const REFRESH_INTERVAL = 60000; // 60 seconds in milliseconds
+/* Use this to override the name that displays on the widget.
+  Useful if your ITL/GS name is over 11 characters, or if you prefer
+  a different handle. */
+const OVERRIDE_NAME = "";
 
-const CONFIG = {
-  endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
+/* Use this to override the avatar source.
+  Useful if you want to use a non-png file as an avatar.
+  Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
+const AVATAR_SOURCE = "";
 
-  /* Use this to override the name that displays on the widget.
-    Useful if your ITL/GS name is over 11 characters, or if you prefer
-    a different handle. */
-  overrideName: "",
-
-  /* Use this to override the avatar source.
-    Useful if you want to use a non-png file as an avatar.
-    Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
-  avatarSource: "",
-};
+const e = React.createElement;
 
 const EMPTY_LADDER_ENTRY = {
   rank: "--",
@@ -27,7 +23,29 @@ const EMPTY_LADDER_ENTRY = {
   type: "neutral",
 }
 
-const LADDER_LENGTH = 6;
+function createLadder(length) {
+  const ladder = [];
+  for (let i = 0; i < length; i++) {
+    ladder.push(EMPTY_LADDER_ENTRY)
+  }
+  return ladder;
+}
+
+function formatDifference(difference) {
+  return difference === 0
+    ? "--"
+    : difference > 0
+      ? `+${difference}`
+      : `${difference}`;
+};
+
+const CONFIG = {
+  endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
+  overrideName: OVERRIDE_NAME,
+  avatarSource: AVATAR_SOURCE,
+  ladderLength: 6,
+  refreshInterval: 60000 // 60 seconds in milliseconds
+};
 
 const DEFAULT_STATE = {
   entrant: {
@@ -51,26 +69,8 @@ const DEFAULT_STATE = {
     staminaLevel: 0,
   },
 
-  ladder: createLadder(LADDER_LENGTH),
+  ladder: createLadder(CONFIG.ladderLength),
 };
-
-function createLadder(length) {
-  const ladder = [];
-  for (let i = 0; i < length; i++) {
-    ladder.push(EMPTY_LADDER_ENTRY)
-  }
-  return ladder;
-}
-
-function formatDifference(difference) {
-  return difference === 0
-    ? "--"
-    : difference > 0
-      ? `+${difference}`
-      : `${difference}`;
-};
-
-const e = React.createElement;
 
 class ITLWidget extends React.Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class ITLWidget extends React.Component {
         const [entrant, ladder] = [json.data.entrant, json.data.ladder];
   
         // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
-        for (let i = 0; i < LADDER_LENGTH; i++) {
+        for (let i = 0; i < CONFIG.ladderLength; i++) {
           ladder[i].difference =
             entrant.rankingPoints - ladder[i].rankingPoints;
         }
@@ -123,7 +123,7 @@ class ITLWidget extends React.Component {
     this.getInfo();
     this.interval = setInterval(() => {
       this.getInfo(); 
-    }, REFRESH_INTERVAL);
+    }, CONFIG.refreshInterval);
   }
 
   componentWillUnmount() {
@@ -133,69 +133,65 @@ class ITLWidget extends React.Component {
   render() {
     const { entrant, ladder } = this.state;
 
-    const profilePicture = e('div', {className: "profile-picture"},
-      e('img', {src: (CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
-    )
+    const profilePicture = e('img', {
+      src: (CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource)
+    })
 
-    const entrantName = e('div', {className: "entrant-name"},
+    const entrantName = e('h2', null,
       (CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName)
     )
 
-    const entrantInfo = e('div', {className: "entrant-info"},
-      e('div', {className: "entrant-rank entrant-row"},
-        e('div', null, "Rank: "),
-        e('div', null, ""),
-        e('div', null, entrant.rank),
+    const entrantInfo = e('ul', {className: "entrant-info"},
+      e('li', {className: "entrant-rank"},
+        e('span', null, "Rank: "),
+        e('span', null, entrant.rank),
       ),
-      e('div', {className: "entrant-row"},
-        e('div', null, "RP:"),
-        e('div', null, ""),
-        e('div', null, entrant.rankingPoints),
+      e('li', null, 
+        e('span', null, "RP:"),
+        e('span', null, entrant.rankingPoints),
       ),
-      e('div', {className: "entrant-row"},
-        e('div', null, "TP:"),
-        e('div', null, ""),
-        e('div', null, entrant.totalPoints),
+      e('li', null, 
+        e('span', null, "TP:"),
+        e('span', null, entrant.totalPoints),
       ),
-      e('div', {className: "entrant-row"},
-        e('div', null, "TTL:"),
-        e('div', null, ""),
-        e('div', null, entrant.totalTechLevel),
+      e('li', null, 
+        e('span', null, "TTL:"),
+        e('span', null, entrant.totalTechLevel),
       ),
     )
 
-    const clearInfo = e('div', {className: "clear-info"},
-      e('div', {className: "passes clear-info-row"},
-        e('div', null, "Passes:"),
-        e('div', null, entrant.totalPass)
+    const clearInfo = e('ul', {className: "clear-info"},
+      e('li', {className: "passes"},
+        e('span', null, "Passes:"),
+        e('span', null, entrant.totalPass)
       ),
-      e('div', {className: "fcs clear-info-row"},
-        e('div', null, "FCs:"),
-        e('div', null, entrant.totalFc)
+      e('li', {className: "fcs"},
+        e('span', null, "FCs:"),
+        e('span', null, entrant.totalFc)
       ),
-      e('div', {className: "fecs clear-info-row"},
-        e('div', null, "FECs:"),
-        e('div', null, entrant.totalFec)
+      e('li', {className: "fecs"},
+        e('span', null, "FECs:"),
+        e('span', null, entrant.totalFec)
       ),
-      e('div', {className: "quads clear-info-row"},
-        e('div', null, "Quads:"),
-        e('div', null, entrant.totalQuad)
+      e('li', {className: "quads"},
+        e('span', null, "Quads:"),
+        e('span', null, entrant.totalQuad)
       ),
-      e('div', {className: "quints clear-info-row"},
-        e('div', null, "Quints:"),
-        e('div', null, entrant.totalQuint)
+      e('li', {className: "quints"},
+        e('span', null, "Quints:"),
+        e('span', null, entrant.totalQuint)
       ),
     )
 
     const ladderEntries = ladder.map((player, index) =>
-      e('div', {'key': index, className: `${player.type} ladder-entry`}, 
-        e('div', {className: "ladder-rank"}, `${player.rank}. ${player.name}`),
-        e('div', {}, formatDifference(player.difference))
+      e('li', {'key': index, className: player.type}, 
+        e('span', {className: "ladder-rank"}, `${player.rank}. ${player.name}`),
+        e('span', {}, formatDifference(player.difference))
       )
     );
 
-    const ladderList = e('div', {className: "ladder"}, 
-      e('div', {className: "ladder-title ladder-entry"}, "ITL Online 2023 - Leaderboard"),
+    const ladderList = e('ul', {className: "ladder"}, 
+      e('li', {className: "ladder-title"}, "ITL Online 2023 - Leaderboard"),
       ladderEntries
     );
 
@@ -205,7 +201,7 @@ class ITLWidget extends React.Component {
       grooveRadar,
     )
 
-    return e('div', {className: "wrapper"},
+    return e('section', {className: "wrapper"},
       profilePicture,
       entrantName,
       entrantInfo,

@@ -1,38 +1,38 @@
 .bgwrap {
-  max-width: 620px;
+  max-width: 62rem;
 }
 
 .wrapper {
   height: calc(100% - 1rem);
   padding: .5rem;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--dark-wrapper-bg);
   color: white;
 }
 
 .rival {
-  background-color: rgba(152, 102, 102, 0.5);
+  background-color: var(--dark-rival);
 }
 
 .self {
-  background-color: rgba(102, 152, 102, 0.5);
+  background-color: var(--dark-self);
 }
 
 .neutral {
-  background-color: rgba(170, 170, 170, 0.5);
+  background-color: var(--dark-neutral);
 }
 
 .fcs {
-  color: lightgreen;
+  color: var(--dark-fc-green);
 }
 
 .fecs {
-  color: goldenrod;
+  color: var(--dark-fec-gold);
 }
 
 .quads {
-  color: skyblue;
+  color: var(--dark-quad-blue);
 }
 
 .quints {
-  color: pink;
+  color: var(--dark-quint-pink);
 }

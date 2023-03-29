@@ -4,35 +4,35 @@
 
 .wrapper {
   height: calc(100% - 1rem);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--light-wrapper-bg);
   padding: .5rem;
   color: black;
 }
 
 .rival {
-  background-color: rgba(221, 204, 204);
+  background-color: var(--light-rival);
 }
 
 .self {
-  background-color: rgba(204, 221, 204);
+  background-color: var(--light-self);
 }
 
 .neutral {
-  background-color: rgba(238, 238, 238);
+  background-color: var(--light-neutral);
 }
 
 .fcs {
-  color: #007800;
+  color: var(--light-fc-green);
 }
 
 .fecs {
-  color: #daa520;
+  color: var(--light-fec-gold);
 }
 
 .quads {
-  color: #34a2d0;
+  color: var(--light-quad-blue);
 }
 
 .quints {
-  color: #ee637b;
+  color: var(--light-quint-pink);
 }

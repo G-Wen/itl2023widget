@@ -5,24 +5,36 @@
 .wrapper {
   height: calc(100% - 1rem);
   padding: .5rem;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--dark-wrapper-bg);
   color: white;
 }
 
+.rival {
+  background-color: var(--dark-rival);
+}
+
+.self {
+  background-color: var(--dark-self);
+}
+
+.neutral {
+  background-color: var(--dark-neutral);
+}
+
 .fcs {
-  color: lightgreen;
+  color: var(--dark-fc-green);
 }
 
 .fecs {
-  color: goldenrod;
+  color: var(--dark-fec-gold);
 }
 
 .quads {
-  color: skyblue;
+  color: var(--dark-quad-blue);
 }
 
 .quints {
-  color: pink;
+  color: var(--dark-quint-pink);
 }
 
 .ladder {
@@ -30,21 +42,9 @@
   position: absolute;
   top: 13.2rem;
   left: 0.8rem;
-  background-color: rgba(76, 76, 76, 1);
+  background-color: var(--dark-ladder-bg);
 }
 
 .ladder-title {
-  background-color: rgba(76, 76, 76, 1);
-}
-
-.rival {
-  background-color: rgba(152, 102, 102, 1);
-}
-
-.self {
-  background-color: rgba(102, 152, 102, 1);
-}
-
-.neutral {
-  background-color: rgba(76, 76, 76, 1);
+  background-color: var(--dark-ladder-title-bg);
 }
