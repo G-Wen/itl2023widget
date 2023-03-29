@@ -88,20 +88,31 @@ class ITLWidget extends React.Component {
         return Promise.reject(response);
       })
       .then((json) => {
-        const data = json.data;
+        const [entrant, ladder] = [json.data.entrant, json.data.ladder];
   
         // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
         for (let i = 0; i < LADDER_LENGTH; i++) {
-          data.ladder[i].difference =
-            data.entrant.rankingPoints - data.ladder[i].rankingPoints;
+          ladder[i].difference =
+            entrant.rankingPoints - ladder[i].rankingPoints;
         }
 
-        data.entrant.techLevels = [data.entrant.crossoverLevel, data.entrant.sideswitchLevel, data.entrant.footswitchLevel, data.entrant.jackLevel, data.entrant.doublestepLevel, data.entrant.bracketLevel, data.entrant.staminaLevel]
+        entrant.techLevels = [
+          entrant.crossoverLevel,
+          entrant.sideswitchLevel,
+          entrant.footswitchLevel,
+          entrant.jackLevel,
+          entrant.doublestepLevel,
+          entrant.bracketLevel,
+          entrant.staminaLevel
+        ];
 
-        data.entrant.totalTechLevel = data.entrant.techLevels.reduce((a, b) => a + b, 0);
+        entrant.totalTechLevel = entrant.techLevels.reduce((a, b) => a + b, 0);
 
-        this.setState(data);
-        drawGrooveRadar(data.entrant);
+        this.setState({
+          entrant,
+          ladder
+        });
+        drawGrooveRadar(entrant);
       })
       .catch((error) => {
         console.error("Error", error);
@@ -122,27 +133,31 @@ class ITLWidget extends React.Component {
   render() {
     const { entrant, ladder } = this.state;
 
+    const profilePicture = e('div', {className: "profile-picture"},
+      e('img', {src: (CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
+    )
+
     const entrantName = e('div', {className: "entrant-name"},
       (CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName)
     )
 
     const entrantInfo = e('div', {className: "entrant-info"},
-      e('div', {className: "entrant-rank"},
+      e('div', {className: "entrant-rank entrant-row"},
         e('div', null, "Rank: "),
         e('div', null, ""),
         e('div', null, entrant.rank),
       ),
-      e('div', {className: "entrant-points"},
+      e('div', {className: "entrant-row"},
         e('div', null, "RP:"),
         e('div', null, ""),
         e('div', null, entrant.rankingPoints),
       ),
-      e('div', {className: "entrant-points"},
+      e('div', {className: "entrant-row"},
         e('div', null, "TP:"),
         e('div', null, ""),
         e('div', null, entrant.totalPoints),
       ),
-      e('div', {className: "entrant-points"},
+      e('div', {className: "entrant-row"},
         e('div', null, "TTL:"),
         e('div', null, ""),
         e('div', null, entrant.totalTechLevel),
@@ -150,30 +165,30 @@ class ITLWidget extends React.Component {
     )
 
     const clearInfo = e('div', {className: "clear-info"},
-      e('div', {className: "passes"},
+      e('div', {className: "passes clear-info-row"},
         e('div', null, "Passes:"),
         e('div', null, entrant.totalPass)
       ),
-      e('div', {className: "fcs"},
+      e('div', {className: "fcs clear-info-row"},
         e('div', null, "FCs:"),
         e('div', null, entrant.totalFc)
       ),
-      e('div', {className: "fecs"},
+      e('div', {className: "fecs clear-info-row"},
         e('div', null, "FECs:"),
         e('div', null, entrant.totalFec)
       ),
-      e('div', {className: "quads"},
+      e('div', {className: "quads clear-info-row"},
         e('div', null, "Quads:"),
         e('div', null, entrant.totalQuad)
       ),
-      e('div', {className: "quints"},
+      e('div', {className: "quints clear-info-row"},
         e('div', null, "Quints:"),
         e('div', null, entrant.totalQuint)
       ),
     )
 
     const ladderEntries = ladder.map((player, index) =>
-      e('div', {'key': index, className: player.type}, 
+      e('div', {'key': index, className: `${player.type} ladder-entry`}, 
         e('div', {className: "ladder-rank"}, `${player.rank}. ${player.name}`),
         e('div', {}, formatDifference(player.difference))
       )
@@ -184,16 +199,14 @@ class ITLWidget extends React.Component {
       ladderEntries
     );
 
-    const grooveRadar = e('canvas', {id: "canvas", className: "groove-radar", special: true, width: 100, height: 100});
+    const grooveRadar = e('canvas', {id: "canvas", className: "dead-end", grooveRadar: "special"});
 
     const techLevelInfo = e('div', {className: "tech-level-info"},
       grooveRadar,
     )
 
-    return e('div', {className: "wrapper"}, 
-      e('div', {className: "profile-picture"},
-        e('img', {src: (CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
-      ),
+    return e('div', {className: "wrapper"},
+      profilePicture,
       entrantName,
       entrantInfo,
       clearInfo,
