@@ -16,4 +16,6 @@ ITL Online 2023 integration by [VincentITG](https://github.com/vlnguyen).
 
 JSX conversion by [JWong](https://github.com/JonJWong).
 
+CSS clean up by [RootReducer](https://github.com/stclairdaniel)
+
 Dark theme of the widget was provided courtesy of [Freis](https://github.com/gab-santi), minor modifications have been made.
