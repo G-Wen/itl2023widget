@@ -104,7 +104,11 @@ class ITLWidget extends React.Component {
 
   componentDidMount() {
     this.getInfo();
-    this.interval = setInterval(() => {this.getInfo()}, REFRESH_INTERVAL);
+    draw();
+    this.interval = setInterval(() => {
+      this.getInfo(); 
+      draw();
+    }, REFRESH_INTERVAL);
   }
 
   componentWillUnmount() {
@@ -203,6 +207,8 @@ class ITLWidget extends React.Component {
       ladderEntries
     );
 
+    const can = e('canvas', {width: 20, height: 30});
+
     return e('div', {className: "wrapper"}, 
       e('div', {className: "profile-picture"},
         e('img', {src: (CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource), "object-fit": "contain", width: "100px", height: "100px"}, null)
@@ -210,9 +216,20 @@ class ITLWidget extends React.Component {
       entrantName,
       entrantInfo,
       clearInfo,
-      techLevelInfo,
-      ladderList
+      can,
+      ladderList,
     )
+  }
+}
+
+function draw() {
+  // draw needs to  actually draw the shape but for now I'd just like it to draw something
+  const canvas = document.getElementById("canvas");
+  if (canvas.getContext) {
+    const ctx = canvas.getContext("2d");
+    ctx.fillRect(25, 25, 100, 100);
+    ctx.clearRect(45, 45, 60, 60);
+    ctx.strokeRect(50, 50, 50, 50);
   }
 }
 
