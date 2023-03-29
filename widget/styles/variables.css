@@ -1,0 +1,23 @@
+:root {
+  --dark-wrapper-bg: rgba(0, 0, 0, 0.7);
+  --dark-rival: rgba(152, 102, 102, 0.5);
+  --dark-self: rgba(102, 152, 102, 0.5);
+  --dark-neutral: rgba(170, 170, 170, 0.5);
+  --dark-fc-green: rgb(144, 238, 144);
+  --dark-fec-gold: rgb(218, 165, 32);
+  --dark-quad-blue: rgb(135, 206, 235);
+  --dark-quint-pink: rgb(255, 192, 203);
+  --dark-ladder-title-bg: rgba(76, 76, 76, 1);
+  --dark-ladder-bg: rgba(76, 76, 76, 1);
+
+  --light-wrapper-bg: rgba(255, 255, 255, 0.8);
+  --light-rival: rgb(221, 204, 204);
+  --light-self: rgb(204, 221, 204);
+  --light-neutral: rgb(238, 238, 238);
+  --light-fc-green: rgb(0, 120, 0);
+  --light-fec-gold: rgb(218, 165, 32);
+  --light-quad-blue: rgb(52, 162, 208);
+  --light-quint-pink: rgb(238, 99, 123);
+  --light-ladder-title-bg: rgb(238, 238, 238);
+  --light-ladder-bg: rgb(238, 238, 238);
+}

@@ -1,0 +1,50 @@
+.bgwrap {
+  width: 40.5rem;
+}
+
+.wrapper {
+  height: calc(100% - 1rem);
+  padding: .5rem;
+  background-color: var(--dark-wrapper-bg);
+  color: white;
+}
+
+.rival {
+  background-color: var(--dark-rival);
+}
+
+.self {
+  background-color: var(--dark-self);
+}
+
+.neutral {
+  background-color: var(--dark-neutral);
+}
+
+.fcs {
+  color: var(--dark-fc-green);
+}
+
+.fecs {
+  color: var(--dark-fec-gold);
+}
+
+.quads {
+  color: var(--dark-quad-blue);
+}
+
+.quints {
+  color: var(--dark-quint-pink);
+}
+
+.ladder {
+  width: 40.5rem;
+  position: absolute;
+  top: 13.2rem;
+  left: 0.8rem;
+  background-color: var(--dark-ladder-bg);
+}
+
+.ladder-title {
+  background-color: var(--dark-ladder-title-bg);
+}

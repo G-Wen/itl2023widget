@@ -1,0 +1,86 @@
+html {
+  font-size: 10px;
+  font-family: "Bahnschrift", Times, serif;
+}
+
+.bgwrap {
+  background-image: url("../bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 12.4rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.wrapper > img {
+  width: 10rem;
+  height: 10rem;
+  object-fit: contain;
+}
+
+.entrant-info > li {
+  display: flex;
+  justify-content: space-between;
+  padding-top: .2rem;
+  font-size: 1.5rem;
+  width: 9rem;
+}
+
+.wrapper > h2 {
+  position: absolute;
+  font-size: 2.8rem;
+  font-weight: bold;
+  top: 1rem;
+  left: 12.5rem;
+  right: auto;
+  white-space: nowrap;
+}
+
+.entrant-rank {
+  font-size: 1.8rem;
+  padding-bottom: .2rem;
+}
+
+.tech-level-info {
+  width: 10rem;
+  height: 10rem;
+}
+
+.clear-info, .ladder {
+  font-size: 1.4rem;
+}
+
+.clear-info {
+  min-width: 8rem;
+}
+
+.clear-info > li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ladder {
+  min-width: 15rem;
+}
+
+.ladder-title {
+  text-decoration: underline;
+  padding-bottom: .1rem;
+}
+
+.ladder-rank {
+  max-height: 1.7rem;
+  overflow: hidden;
+}
+
+.ladder > li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 .3rem;
+}

@@ -14,7 +14,7 @@ To run the widget download the repository and follow the instructions in `widget
 
 ITL Online 2023 integration by [VincentITG](https://github.com/vlnguyen).
 
-JSX conversion by [JWong](https://github.com/JonJWong).
+JSX conversion, CSS/HTML rework by [JWong](https://github.com/JonJWong).
 
 CSS clean up by [RootReducer](https://github.com/stclairdaniel)
 
