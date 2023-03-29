@@ -1,8 +1,8 @@
 # [ITL Online 2023](https://itl2023.groovestats.com) Stream Stats Widget 
 
-![image](widget_dark.png)
+![image](widget_grs_dark.png)
 
-![image](widget_light_vertical.png)
+![image](widget_light_grs_vertical.png)
 
 To download the repository you can click on `Code` and then `Download ZIP`:
 
