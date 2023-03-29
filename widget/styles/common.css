@@ -42,7 +42,7 @@ html {
   white-space: nowrap;
 }
 
-.entrant-rank {
+.entrant-info li.entrant-rank {
   font-size: 1.8rem;
   padding-bottom: .2rem;
 }
