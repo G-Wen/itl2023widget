@@ -97,7 +97,11 @@ class ITLWidget extends React.Component {
         }
 
         data.entrant.techLevels = [data.entrant.crossoverLevel, data.entrant.sideswitchLevel, data.entrant.footswitchLevel, data.entrant.jackLevel, data.entrant.doublestepLevel, data.entrant.bracketLevel, data.entrant.staminaLevel]
-        data.entrant.totalTechLevel = data.entrant.techLevels.reduce((a, b) => a + b, 0);
+
+        // prevent some division by 0 down the line
+        data.entrant.techLevels = data.entrant.techLevels.map(x => x+1);
+
+        data.entrant.totalTechLevel = data.entrant.techLevels.reduce((a, b) => a + b, -7);
 
         this.setState(data);
         drawGrooveRadar(data.entrant);
