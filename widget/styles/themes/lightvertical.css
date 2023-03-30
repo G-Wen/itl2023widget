@@ -1,0 +1,50 @@
+.bgwrap {
+  width: 40.5rem;
+}
+
+.wrapper {
+  height: calc(100% - 1rem);
+  padding: .5rem;
+  background-color: var(--light-wrapper-bg);
+  color: black;
+}
+
+.rival {
+  background-color: var(--light-rival);
+}
+
+.self {
+  background-color: var(--light-self);
+}
+
+.neutral {
+  background-color: var(--light-neutral);
+}
+
+.fcs {
+  color: var(--light-fc-green);
+}
+
+.fecs {
+  color: var(--light-fec-gold);
+}
+
+.quads {
+  color: var(--light-quad-blue);
+}
+
+.quints {
+  color: var(--light-quint-pink);
+}
+
+.ladder {
+  width: 40.5rem;
+  position: absolute;
+  top: 13.2rem;
+  left: 0.8rem;
+  background-color: var(--light-ladder-bg);
+}
+
+.ladder-title {
+  background-color: var(--light-ladder-title-bg);
+}

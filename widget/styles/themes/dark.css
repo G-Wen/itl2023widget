@@ -1,0 +1,38 @@
+.bgwrap {
+  max-width: 62rem;
+}
+
+.wrapper {
+  height: calc(100% - 1rem);
+  padding: .5rem;
+  background-color: var(--dark-wrapper-bg);
+  color: white;
+}
+
+.rival {
+  background-color: var(--dark-rival);
+}
+
+.self {
+  background-color: var(--dark-self);
+}
+
+.neutral {
+  background-color: var(--dark-neutral);
+}
+
+.fcs {
+  color: var(--dark-fc-green);
+}
+
+.fecs {
+  color: var(--dark-fec-gold);
+}
+
+.quads {
+  color: var(--dark-quad-blue);
+}
+
+.quints {
+  color: var(--dark-quint-pink);
+}

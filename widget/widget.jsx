@@ -4,21 +4,15 @@ import { useState, useEffect } from "react";
   ex. ENTRANT_ID = 99; */
 const ENTRANT_ID = 41;
 
-const REFRESH_INTERVAL = 60000; // 60 seconds in milliseconds
-
-const CONFIG = {
-  endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
-
-  /* Use this to override the name that displays on the widget.
-    Useful if your ITL/GS name is over 11 characters, or if you prefer
-    a different handle. */
-  overrideName: "",
-
-  /* Use this to override the avatar source.
-    Useful if you want to use a non-png file as an avatar.
-    Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
-  avatarSource: "",
-};
+/* Use this to override the name that displays on the widget.
+  Useful if your ITL/GS name is over 11 characters, or if you prefer
+  a different handle. */
+const OVERRIDE_NAME = "";
+  
+/* Use this to override the avatar source.
+  Useful if you want to use a non-png file as an avatar.
+  Format should be a URL. ex. "https://giphy.com/imageurl.gif" */
+const AVATAR_SOURCE = "";
 
 const EMPTY_LADDER_ENTRY = {
   rank: "--",
@@ -26,6 +20,30 @@ const EMPTY_LADDER_ENTRY = {
   rankingPoints: 0,
   difference: 0,
   type: "neutral",
+};
+
+function createLadder(num) {
+  const ladderArray = [];
+  for (let i = 0; i < num; i++) {
+    ladderArray.push(EMPTY_LADDER_ENTRY);
+  }
+  return ladderArray;
+}
+
+function formatDifference(difference) {
+  return difference === 0
+    ? "--"
+    : difference > 0
+      ? `+${difference}`
+      : `${difference}`;
+}
+
+const CONFIG = {
+  endpoint: `https://itl2023.groovestats.com/api/entrant/${ENTRANT_ID}/stats`,
+  overrideName: OVERRIDE_NAME,
+  avatarSource: AVATAR_SOURCE,
+  ladderLength: 6,
+  refreshInterval: 60000, // 60 seconds in milliseconds
 };
 
 const DEFAULT_STATE = {
@@ -49,24 +67,8 @@ const DEFAULT_STATE = {
     staminaLevel: "-",
   },
 
-  ladder: createLadder(6),
+  ladder: createLadder(CONFIG.ladderLength),
 };
-
-function createLadder(num) {
-  const ladderArray = [];
-  for (let i = 0; i < num; i++) {
-    ladderArray.push(EMPTY_LADDER_ENTRY);
-  }
-  return ladderArray;
-}
-
-function formatDifference(difference) {
-  return difference === 0
-    ? "--"
-    : difference > 0
-    ? `+${difference}`
-    : `${difference}`;
-}
 
 function normalizeTechLevels(techLevels) {
   const maxLevel = Math.max(...techLevels, 1);
@@ -122,8 +124,8 @@ const ITLWidget = () => {
   const [state, setState] = useState(DEFAULT_STATE);
   const [loaded, setLoaded] = useState(false);
 
-  const getInfo = () => {
-    fetch(CONFIG.endpoint)
+  const getInfo = (signal = null) => {
+    fetch(CONFIG.endpoint, { signal })
       .then((response) => {
         if (response.ok) {
           const json = response.json();
@@ -136,7 +138,7 @@ const ITLWidget = () => {
         const [entrant, ladder] = [json.data.entrant, json.data.ladder];
 
         // Calculate the ranking points difference between the ENTRANT_ID and the rest of the ladder
-        for (let i = 0; i < LADDER_LENGTH; i++) {
+        for (let i = 0; i < CONFIG.ladderLength; i++) {
           ladder[i].difference =
             entrant.rankingPoints - ladder[i].rankingPoints;
         }
@@ -151,6 +153,8 @@ const ITLWidget = () => {
           entrant.staminaLevel,
         ];
 
+        entrant.totalTechLevel = entrant.techLevels.reduce((a, b) => a + b, 0);
+
         setState({
           entrant,
           ladder,
@@ -159,109 +163,110 @@ const ITLWidget = () => {
         setLoaded(true);
       })
       .catch((error) => {
-        console.error("Error", error);
+        if (error.name === "AbortError") {
+          console.log("Aborted!", error)
+        } else {
+          console.log("Error", error)
+        }
       });
   };
 
   useEffect(() => {
-    // runs at component mount
-    getInfo();
-    const refreshInterval = setInterval(() => getInfo(), REFRESH_INTERVAL);
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    getInfo(signal);
+    const refreshInterval = setInterval(() => getInfo(signal), CONFIG.refreshInterval);
 
     return () => {
-      // runs at component un-mount
+      controller.abort();
       clearInterval(refreshInterval);
     };
-
-    /* Will run once on mount, and then whenever getInfo changes (never).
-      Still runs on dismount with return */
-  }, [getInfo]);
+  }, []);
 
   if (!loaded) return <></>;
 
   const { entrant, ladder } = state;
 
   return (
-    <div className='wrapper'>
-      <div className='profile-picture'>
-        <img
-          src={CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource}
-        />
-      </div>
-
-      <div className='entrant-name'>
+    <section className='wrapper'>
+      <img
+        className='profile-picture'
+        src={CONFIG.avatarSource == "" ? "Avatar.png" : CONFIG.avatarSource}
+      />
+      <h2>
         {CONFIG.overrideName == "" ? entrant.name : CONFIG.overrideName}
-      </div>
+      </h2>
 
-      <div className='entrant-info'>
-        <div className='entrant-id'>
-          <div>ID: {entrant.id}</div>
-        </div>
-        <div className='entrant-rank'>
-          <div>Rank: {entrant.rank}</div>
-        </div>
-        <div className='entrant-points'>
-          <div>RP:</div>
-          <div />
-          <div>{entrant.rankingPoints}</div>
-        </div>
-        <div className='entrant-points'>
-          <div>TP:</div>
-          <div />
-          <div>{entrant.totalPoints}</div>
-        </div>
-      </div>
+      <ul className='entrant-info'>
+        <li className='entrant-rank'>
+          <span>Rank: </span>
+          <span>{entrant.rank}</span>
+        </li>
+        <li>
+          <span>RP:</span>
+          <span>{entrant.rankingPoints}</span>
+        </li>
+        <li>
+          <span>TP:</span>
+          <span>{entrant.totalPoints}</span>
+        </li>
+        <li>
+          <span>TTL:</span>
+          <span>{entrant.totalTechLevel}</span>
+        </li>
+      </ul>
 
-      <div className='clear-info'>
-        <div className='passes clear-info-row'>
-          <div>Passes:</div>
-          <div>{entrant.totalPass}</div>
-        </div>
-        <div className='fcs clear-info-row'>
-          <div>FCs:</div>
-          <div>{entrant.totalFc}</div>
-        </div>
-        <div className='fecs clear-info-row'>
-          <div>FECs:</div>
-          <div>{entrant.totalFec}</div>
-        </div>
-        <div className='quads clear-info-row'>
-          <div>Quads:</div>
-          <div>{entrant.totalQuad}</div>
-        </div>
-        <div className='quints clear-info-row'>
-          <div>Quints:</div>
-          <div>{entrant.totalQuint}</div>
-        </div>
-      </div>
+      <ul className='clear-info'>
+        <li className='passes'>
+          <span>Passes:</span>
+          <span>{entrant.totalPass}</span>
+        </li>
+        <li className='fcs'>
+          <span>FCs:</span>
+          <span>{entrant.totalFc}</span>
+        </li>
+        <li className='fecs'>
+          <span>FECs:</span>
+          <span>{entrant.totalFec}</span>
+        </li>
+        <li className='quads'>
+          <span>Quads:</span>
+          <span>{entrant.totalQuad}</span>
+        </li>
+        <li className='quints'>
+          <span>Quints:</span>
+          <span>{entrant.totalQuint}</span>
+        </li>
+      </ul>
 
       <div className='tech-level-info'>
-        <div
+        <canvas
           id='canvas'
           className='dead-end'
           grooveRadar='special'
         />
       </div>
 
-      <div className='ladder'>
-        <div className='ladder-title'>ITL Online 2023 - Leaderboard</div>
+      <ul className='ladder'>
+        <li className='ladder-title'>ITL Online 2023 - Leaderboard</li>
         {ladder.map((player, index) => {
           return (
-            <div
+            <li
               key={index}
               className={player.type}
             >
-              <div className='ladder-rank'>
+              <span className='ladder-rank'>
                 {player.rank}. {player.name}
-              </div>
-              <div>{formatDifference(player.difference)}</div>
-            </div>
+              </span>
+              <span>{formatDifference(player.difference)}</span>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 };
 
-const root = ReactDOM.createRoot(document.getElementById("entrant"));
+const root = ReactDOM.createRoot(document.querySelector("bgwrap"));
 root.render(<ITLWidget />);
