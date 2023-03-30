@@ -124,8 +124,8 @@ const ITLWidget = () => {
   const [state, setState] = useState(DEFAULT_STATE);
   const [loaded, setLoaded] = useState(false);
 
-  const getInfo = () => {
-    fetch(CONFIG.endpoint)
+  const getInfo = (signal = null) => {
+    fetch(CONFIG.endpoint, { signal })
       .then((response) => {
         if (response.ok) {
           const json = response.json();
@@ -163,22 +163,25 @@ const ITLWidget = () => {
         setLoaded(true);
       })
       .catch((error) => {
-        console.error("Error", error);
+        if (error.name === "AbortError") {
+          console.log("Aborted!", error)
+        } else {
+          console.log("Error", error)
+        }
       });
   };
 
   useEffect(() => {
-    // runs at component mount
-    getInfo();
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    getInfo(signal);
     const refreshInterval = setInterval(() => getInfo(), CONFIG.refreshInterval);
 
     return () => {
-      // runs at component un-mount
+      controller.abort();
       clearInterval(refreshInterval);
     };
-
-    /* Will run once on mount, and then whenever getInfo changes (never).
-      Still runs on dismount with return */
   }, []);
 
   if (!loaded) return <></>;
