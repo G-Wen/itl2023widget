@@ -158,10 +158,7 @@ class ITLWidget extends React.Component {
 
         entrant.totalTechLevel = entrant.techLevels.reduce((a, b) => a + b, 0);
 
-        this.setState({
-          entrant,
-          ladder,
-        });
+        this.setState(json.data);
       })
       .catch((error) => {
         console.error("Error", error);
