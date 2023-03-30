@@ -176,7 +176,7 @@ const ITLWidget = () => {
     const signal = controller.signal;
 
     getInfo(signal);
-    const refreshInterval = setInterval(() => getInfo(), CONFIG.refreshInterval);
+    const refreshInterval = setInterval(() => getInfo(signal), CONFIG.refreshInterval);
 
     return () => {
       controller.abort();
